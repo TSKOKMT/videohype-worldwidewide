@@ -1,0 +1,19 @@
+{
+  "name": "nodejslab",
+  "version": "1.0.0",
+  "description": "This example is so cool.",
+  "main": "whatisyourip.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node whatisyourip.js"
+  },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "author": "video-hype",
+  "license": "ISC",
+  "engines": {
+    "node": "20.11.0"
+  }
+}
