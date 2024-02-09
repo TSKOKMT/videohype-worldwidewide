@@ -54,12 +54,12 @@ function generateHTML(dynamicText) {
   `;
 }
 
-//const IP = require('ip');
+const IP = require('ip');
 
 // Route to serve the modified HTML content
 app.get("/", (req, res) => {
-  //const clientIP = IP.address();
-  const modifiedHtml = generateHTML('Hello');
+  const clientIP = IP.address();
+  const modifiedHtml = generateHTML(clientIP);
   res.type('html').send(modifiedHtml);
 });
 
