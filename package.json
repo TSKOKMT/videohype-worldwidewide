@@ -1,10 +1,10 @@
 {
-  "name": "express-hello-world",
+  "name": "videohype-worldwidewide",
   "version": "1.0.0",
-  "description": "Express Hello World on Render",
+  "description": "VIDE HYPE : World Wide Wide",
   "main": "app.js",
-  "repository": "https://github.com/render-examples/express-hello-world",
-  "author": "Render Developers",
+  "repository": "https://github.com/TSKOKMT/videohype-worldwidewide",
+  "author": "VIDEO HYPE",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -12,8 +12,7 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "ip": "^1.1.8",
-    "request-ip": "^3.3.0"
+    "ip": "^1.1.8"
   },
   "engines": {
     "node": ">=14"
