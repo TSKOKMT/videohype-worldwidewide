@@ -58,8 +58,8 @@ function generateHTML(dynamicText) {
 
 // Route to serve the modified HTML content
 app.get("/", (req, res) => {
-  const dynamicText = "Hello from JavaScript!";
-  const modifiedHtml = generateHTML(dynamicText);
+  const clientIP = req.connection.remoteAddress;
+  const modifiedHtml = generateHTML(clientIP);
   res.type('html').send(modifiedHtml);
 });
 
