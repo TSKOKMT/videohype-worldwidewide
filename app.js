@@ -1,4 +1,6 @@
 const express = require("express");
+const WebSocket = require('ws');
+
 const app = express();
 
 // Function to dynamically update the HTML content
