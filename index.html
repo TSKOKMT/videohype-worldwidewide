@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Client Counter</title>
+</head>
+<body>
+    <h1>WebSocket Client Counter</h1>
+    <p id="clientCount">Number of connected clients: 0</p>
+    <ul id="clientList">
+        <li>No clients connected</li>
+    </ul>
+
+    <script>
+        const socket = new WebSocket('ws://localhost:3000');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            if (data.type === 'connected_clients') {
+                document.getElementById('clientCount').textContent = `Number of connected clients: ${data.count}`;
+                const clientList = data.clients.map(ip => `<li>${ip}</li>`).join('');
+                document.getElementById('clientList').innerHTML = clientList;
+            }
+        };
+    </script>
+</body>
+</html>

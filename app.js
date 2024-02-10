@@ -1,69 +1,56 @@
-const express = require("express");
+const express = require('express');
 const WebSocket = require('ws');
 
 const app = express();
 
-// Function to dynamically update the HTML content
-function generateHTML(dynamicText) {
-  return `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>VIDEO HYPE : World Wide Wide</title>
-        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-        <script>
-          setTimeout(() => {
-            confetti({
-              particleCount: 100,
-              spread: 70,
-              origin: { y: 0.6 },
-              disableForReducedMotion: true
-            });
-          }, 500);
-        </script>
-        <style>
-          @import url("https://p.typekit.net/p.css?s=1&k=vnd5zic&ht=tk&f=39475.39476.39477.39478.39479.39480.39481.39482&a=18673890&app=typekit&e=css");
-          @font-face {
-            src: url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"), url("https://use.typekit.net/af/00ac0a/00000000000000003b9b2033/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-            font-style: normal;
-            font-weight: 700;
-          }
-          html {
-            font-weight: 700;
-            font-size: calc(62rem / 16);
-          }
-          body {
-            background: white;
-          }
-          section {
-            border-radius: 1em;
-            padding: 1em;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-right: -50%;
-            transform: translate(-50%, -50%);
-          }
-        </style>
-      </head>
-      <body>
-        <section>
-          ${dynamicText}
-        </section>
-      </body>
-    </html>
-  `;
-}
-
 app.set('trust proxy', true);
-app.get("/", (req, res) => {
-  const clientIP = req.ip;
-  const modifiedHtml = generateHTML(clientIP);
-  res.type('html').send(modifiedHtml);
+
+const server = app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
 
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+const wss = new WebSocket.Server({ server });
 
-server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
+let clients = [];
+
+wss.on('connection', (ws, req) => {
+    // Add client to the list
+    clients.push({ ip: req.connection.remoteAddress, ws });
+
+    // Send the list of clients to all connected clients
+    broadcastConnectedClients();
+
+    // Listen for client messages
+    ws.on('message', (message) => {
+        console.log(`Received message: ${message}`);
+    });
+
+    // Handle client disconnection
+    ws.on('close', () => {
+        // Remove disconnected client from the list
+        clients = clients.filter(client => client.ws !== ws);
+
+        // Send the updated list of clients to all connected clients
+        broadcastConnectedClients();
+    });
+});
+
+// Function to broadcast the number of connected clients and their IP addresses
+function broadcastConnectedClients() {
+    const connectedClients = clients.map(client => client.ip);
+    const message = {
+        type: 'connected_clients',
+        count: clients.length,
+        clients: connectedClients
+    };
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(message));
+        }
+    });
+}
+
+// Express route to serve HTML page
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
