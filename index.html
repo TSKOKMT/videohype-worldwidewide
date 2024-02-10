@@ -8,24 +8,22 @@
 <body>
   <h1>Connected Clients: <span id="clientCount">0</span></h1>
   <ul id="clientList"></ul>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    const socket = io();
-
-    socket.on('clientCount', count => {
-      document.getElementById('clientCount').textContent = count;
-    });
-
-    socket.on('clientList', list => {
-      const clientList = document.getElementById('clientList');
-      clientList.innerHTML = '';
-      list.forEach(ip => {
-        const listItem = document.createElement('li');
-        listItem.textContent = ip;
-        clientList.appendChild(listItem);
-      });
-    });
-  </script>
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const socket = io();
+
+socket.on('clientCount', count => {
+    document.getElementById('clientCount').textContent = count;
+});
+
+socket.on('clientList', list => {
+    const clientList = document.getElementById('clientList');
+    list.forEach(ip => {
+        const button = document.createElement('button');
+        button.textContent = ip;
+        clientList.appendChild(button);
+    });
+});
+</script>
 </html>
