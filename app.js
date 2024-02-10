@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3001;
 
 // Function to dynamically update the HTML content
 function generateHTML(dynamicText) {
@@ -54,15 +53,14 @@ function generateHTML(dynamicText) {
   `;
 }
 
-const IP = require('ip');
-
 // Route to serve the modified HTML content
 app.get("/", (req, res) => {
-  const clientIP = IP.address();
+  const clientIP = req.ip;
   const modifiedHtml = generateHTML(clientIP);
   res.type('html').send(modifiedHtml);
 });
 
+const port = process.env.PORT || 3000;
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
