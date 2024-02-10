@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 let connectedClients = {};
 
 io.on('connection', socket => {
-  const clientIP = socket.handshake.address;
+  const clientIP = socket.request.connection.remoteAddress;
   connectedClients[socket.id] = clientIP;
 
   // Update connected clients count
