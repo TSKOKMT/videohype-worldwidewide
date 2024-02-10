@@ -53,7 +53,7 @@ function generateHTML(dynamicText) {
   `;
 }
 
-// Route to serve the modified HTML content
+app.set('trust proxy', true);
 app.get("/", (req, res) => {
   const clientIP = req.ip;
   const modifiedHtml = generateHTML(clientIP);
