@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Client Counter</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Counter</title>
 </head>
 <body>
-    <h1>WebSocket Client Counter</h1>
-    <p id="clientCount">Number of connected clients: 0</p>
-    <ul id="clientList">
-        <li>No clients connected</li>
-    </ul>
+  <h1>Connected Clients: <span id="clientCount">0</span></h1>
+  <ul id="clientList"></ul>
 
-    <script>
-        const socket = new WebSocket('ws://localhost:3000');
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
 
-        socket.onmessage = function(event) {
-            const data = JSON.parse(event.data);
-            if (data.type === 'connected_clients') {
-                document.getElementById('clientCount').textContent = `Number of connected clients: ${data.count}`;
-                const clientList = data.clients.map(ip => `<li>${ip}</li>`).join('');
-                document.getElementById('clientList').innerHTML = clientList;
-            }
-        };
-    </script>
+    socket.on('clientCount', count => {
+      document.getElementById('clientCount').textContent = count;
+    });
+
+    socket.on('clientList', list => {
+      const clientList = document.getElementById('clientList');
+      clientList.innerHTML = '';
+      list.forEach(ip => {
+        const listItem = document.createElement('li');
+        listItem.textContent = ip;
+        clientList.appendChild(listItem);
+      });
+    });
+  </script>
 </body>
 </html>

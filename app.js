@@ -1,56 +1,37 @@
 const express = require('express');
-const WebSocket = require('ws');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
-app.set('trust proxy', true);
+const PORT = process.env.PORT || 3000;
 
-const server = app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+let connectedClients = {};
+
+io.on('connection', socket => {
+  const clientIP = socket.request.connection.remoteAddress;
+  connectedClients[socket.id] = clientIP;
+
+  // Update connected clients count
+  io.emit('clientCount', Object.keys(connectedClients).length);
+  // Send updated list of client IPs
+  io.emit('clientList', Object.values(connectedClients));
+
+  socket.on('disconnect', () => {
+    delete connectedClients[socket.id];
+    // Update connected clients count
+    io.emit('clientCount', Object.keys(connectedClients).length);
+    // Send updated list of client IPs
+    io.emit('clientList', Object.values(connectedClients));
+  });
 });
 
-const wss = new WebSocket.Server({ server });
-
-let clients = [];
-
-wss.on('connection', (ws, req) => {
-    // Add client to the list
-    clients.push({ ip: ws._socket.remoteAddress, ws });
-
-    // Send the list of clients to all connected clients
-    broadcastConnectedClients();
-
-    // Listen for client messages
-    ws.on('message', (message) => {
-        console.log(`Received message: ${message}`);
-    });
-
-    // Handle client disconnection
-    ws.on('close', () => {
-        // Remove disconnected client from the list
-        clients = clients.filter(client => client.ws !== ws);
-
-        // Send the updated list of clients to all connected clients
-        broadcastConnectedClients();
-    });
-});
-
-// Function to broadcast the number of connected clients and their IP addresses
-function broadcastConnectedClients() {
-    const connectedClients = clients.map(client => client.ip);
-    const message = {
-        type: 'connected_clients',
-        count: clients.length,
-        clients: connectedClients
-    };
-    wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(message));
-        }
-    });
-}
-
-// Express route to serve HTML page
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+  res.sendFile(__dirname + '/index.html');
+});
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
