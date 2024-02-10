@@ -15,7 +15,7 @@ let clients = [];
 
 wss.on('connection', (ws, req) => {
     // Add client to the list
-    clients.push({ ip: req.connection.remoteAddress, ws });
+    clients.push({ ip: ws._socket.remoteAddress, ws });
 
     // Send the list of clients to all connected clients
     broadcastConnectedClients();
