@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('a user connected');
 
-    const clientIP = socket.handshake.address;
+    const clientIP = socket.handshake.headers["cf-connecting-ip"];
     connectedClients[socket.id] = clientIP;
 
     io.emit('clientCount', Object.keys(connectedClients).length);
