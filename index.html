@@ -16,15 +16,25 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('yourIP').textContent = data.ip;
+            })
+            .catch(error => {
+            });
+        });
+
         var socket = io();
 
         socket.on('clientCount', count => {
             document.getElementById('clientCount').textContent = count;
         });
 
-        socket.on('yourIP', ip => {
+        /*socket.on('yourIP', ip => {
             document.getElementById('yourIP').textContent = ip;
-        });
+        });*/
 
         socket.on('yourColor', color => {
             document.getElementById('yourColor').style.color = color;
