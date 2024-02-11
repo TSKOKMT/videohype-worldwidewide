@@ -3,24 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Screen Synchronization</title>
+    <title>VIDEO HYPE : World Wide Wide</title>
+    <style>
+        h1 {
+            display: inline;
+            margin: 0;
+        }
+        button {
+            width: 100px;
+            height: 50px;
+            font-size: 20px;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Client Count: <span id="clientCount">0</span></h1>
-    <h1>Your IP: <span id="yourIP"></span></h1>
-    <h1><span id="yourColor">Your Color</span></h1>
+    <h1>Client Count : <span id="clientCount">0</span></h1><br>
+    <h1>Your IP : <span id="yourIP"></span></h1><br>
+    <h1><span id="yourColor">Your Color</span></h1><br>
     <button id="helloButton">Hello</button>
     <button id="yoButton">Yo</button>
-    <button id="goodEveningButton">Good Evening</button>
-    <div id="messageContainer"></div>
+    <button id="whatButton">What</button>
+    <div id="container"></div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
+        let IPAddress = '';
+
         window.addEventListener('DOMContentLoaded', () => {
             fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
-                document.getElementById('yourIP').textContent = data.ip;
+                IPAddress = data.ip;
+                document.getElementById('yourIP').textContent = IPAddress;
+                document.getElementById('yourColor').style.color = ipToHexColor(IPAddress);
             })
             .catch(error => {
             });
@@ -31,39 +47,64 @@
         socket.on('clientCount', count => {
             document.getElementById('clientCount').textContent = count;
         });
-
-        /*socket.on('yourIP', ip => {
-            document.getElementById('yourIP').textContent = ip;
-        });*/
-
-        socket.on('yourColor', color => {
-            document.getElementById('yourColor').style.color = color;
-        });
         
         // When the button is clicked, emit 'userAction' event
         document.getElementById('helloButton').addEventListener('click', function() {
-            var actionData = {text: 'Hello'};
+            var actionData = {text: 'Hello', ip: IPAddress};
             socket.emit('userAction', actionData);
         });
         document.getElementById('yoButton').addEventListener('click', function() {
-            var actionData = {text: 'Yo'};
+            var actionData = {text: 'Yo', ip: IPAddress};
             socket.emit('userAction', actionData);
         });
-        document.getElementById('goodEveningButton').addEventListener('click', function() {
-            var actionData = {text: 'Good Evening'};
+        document.getElementById('whatButton').addEventListener('click', function() {
+            var actionData = {text: 'What', ip: IPAddress};
             socket.emit('userAction', actionData);
         });
 
         // Handle broadcasted action from the server
-        socket.on('actionBroadcast', function(actionData) {
+        socket.on('hereIsData', function(actionData) {
             // Update UI or perform any necessary action based on actionData
             console.log('Received broadcasted action:', actionData);
-            const messageContainer = document.getElementById('messageContainer');
-            messageContainer.innerHTML = '';
-            var newH1 = document.createElement('h1');
-            newH1.innerHTML = actionData;
-            messageContainer.appendChild(newH1);
+            const container = document.getElementById('container');
+            container.innerHTML = '';
+            for (let i = 0; i < actionData.length; i++) {
+                var newH1 = document.createElement('h1');
+                newH1.innerHTML = actionData[i][0] + ' ';
+                newH1.style.color = ipToHexColor(actionData[i][1]);
+                container.appendChild(newH1);
+            }
         });
+
+        function ipToHexColor(ipAddress) {
+            const hashCode = hashCodeFromString(ipAddress);
+            const hexColor = '#' + loopedHashCodeToHex(hashCode);
+            return hexColor;
+        }
+
+        function hashCodeFromString(str) {
+            let hashCode = 0;
+            if (str.length === 0) return hashCode;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hashCode = ((hashCode << 5) - hashCode) + char;
+                hashCode |= 0; // Convert to 32bit integer
+            }
+            return hashCode;
+        }
+        function loopedHashCodeToHex(hashCode) {
+            let hexString = '';
+            for (let i = 0; i < 3; i++) {
+                const segment = (hashCode >> (8 * i)) & 255;
+                hexString += segment.toString(16).padStart(2, '0');
+            }
+            return hexString;
+        }
+        function update() {
+            socket.emit('pleaseData');
+            requestAnimationFrame(update);
+        }
+        update();
     </script>
 </body>
 </html>
