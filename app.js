@@ -15,13 +15,23 @@ app.get('/', (req, res) => {
 
 //Connect
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  console.log('A client connected');
   clientCount++;
+
+  //Heartbeat
+  const heartbeatInterval = setInterval(() => {
+    if (!socket.connected) {
+        console.log('A client disconnected');
+        clientCount--;
+        clearInterval(heartbeatInterval);
+    }
+  }, 10000);
 
   //Disconnect
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log('A client disconnected');
     clientCount--;
+    clearInterval(heartbeatInterval);
   });
   
   //Button pressed
