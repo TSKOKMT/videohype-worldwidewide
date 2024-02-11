@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const IP = require('ip');
 
 const app = express();
 const server = http.createServer(app);
@@ -12,6 +13,8 @@ let connectedClients = {};
 
 let messageText = '';
 
+const clientIP = IP.address();
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
@@ -19,7 +22,6 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
     console.log('a user connected');
 
-    const clientIP = socket.handshake.headers["cf-connecting-ip"];
     connectedClients[socket.id] = clientIP;
 
     io.emit('clientCount', Object.keys(connectedClients).length);
