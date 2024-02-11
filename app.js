@@ -6,37 +6,39 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const PORT = process.env.PORT || 3000;
-
 let clientCount = 0;
-
 let data = [];
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+//Connect
 io.on('connection', (socket) => {
   console.log('a user connected');
   clientCount++;
 
+  //Disconnect
   socket.on('disconnect', () => {
     console.log('user disconnected');
     clientCount--;
   });
   
-  socket.on('userAction', (actionData) => {
-    console.log('User action received:', actionData);
-    data.push([actionData.text, actionData.ip]);
-    console.log(data);
+  //Button pressed
+  socket.on('buttonPressed', (buttonData) => {
+    console.log('Received from client :', buttonData);
+    data.push([buttonData.text, buttonData.ip]);
   });
 
-  socket.on('pleaseData', (actionData) => {
-    io.emit('hereIsData', data);
+  //Update
+  socket.on('update', () => {
+    io.emit('data', data);
     io.emit('clientCount', clientCount);
   });
 });
 
+//Listen
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

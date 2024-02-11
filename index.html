@@ -30,6 +30,7 @@
     <script>
         let IPAddress = '';
 
+        //Setup
         window.addEventListener('DOMContentLoaded', () => {
             fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
@@ -41,47 +42,44 @@
             .catch(error => {
             });
         });
-
-        var socket = io();
-
-        socket.on('clientCount', count => {
-            document.getElementById('clientCount').textContent = count;
-        });
         
-        // When the button is clicked, emit 'userAction' event
+        //Button pressed
         document.getElementById('helloButton').addEventListener('click', function() {
             var actionData = {text: 'Hello', ip: IPAddress};
-            socket.emit('userAction', actionData);
+            socket.emit('buttonPressed', actionData);
         });
         document.getElementById('yoButton').addEventListener('click', function() {
             var actionData = {text: 'Yo', ip: IPAddress};
-            socket.emit('userAction', actionData);
+            socket.emit('buttonPressed', actionData);
         });
         document.getElementById('whatButton').addEventListener('click', function() {
             var actionData = {text: 'What', ip: IPAddress};
-            socket.emit('userAction', actionData);
+            socket.emit('buttonPressed', actionData);
         });
 
-        // Handle broadcasted action from the server
-        socket.on('hereIsData', function(actionData) {
-            // Update UI or perform any necessary action based on actionData
-            console.log('Received broadcasted action:', actionData);
+        //Received
+        var socket = io();
+        socket.on('clientCount', count => {
+            document.getElementById('clientCount').textContent = count;
+        });
+        socket.on('data', function(data) {
+            console.log('Received from server :', data);
             const container = document.getElementById('container');
             container.innerHTML = '';
-            for (let i = 0; i < actionData.length; i++) {
+            for (let i = 0; i < data.length; i++) {
                 var newH1 = document.createElement('h1');
-                newH1.innerHTML = actionData[i][0] + ' ';
-                newH1.style.color = ipToHexColor(actionData[i][1]);
+                newH1.innerHTML = data[i][0] + ' ';
+                newH1.style.color = ipToHexColor(data[i][1]);
                 container.appendChild(newH1);
             }
         });
 
+        //Function
         function ipToHexColor(ipAddress) {
             const hashCode = hashCodeFromString(ipAddress);
             const hexColor = '#' + loopedHashCodeToHex(hashCode);
             return hexColor;
         }
-
         function hashCodeFromString(str) {
             let hashCode = 0;
             if (str.length === 0) return hashCode;
@@ -100,8 +98,10 @@
             }
             return hexString;
         }
+
+        //Update
         function update() {
-            socket.emit('pleaseData');
+            socket.emit('update');
             requestAnimationFrame(update);
         }
         update();
