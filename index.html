@@ -1,59 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIDEO HYPE : World Wide Wide</title>
-    <script src="/socket.io/socket.io.js"></script>
+    <title>Screen Synchronization</title>
 </head>
-
 <body>
-    <h1>Connected Clients: <span id="clientCount">0</span></h1>
-    <div id="container"></div>
-</body>
+    <h1>Client Count: <span id="clientCount">0</span></h1>
+    <h1>Your IP: <span id="yourIP"></span></h1>
+    <h1><span id="yourColor">Your Color</span></h1>
+    <button id="helloButton">Hello</button>
+    <button id="yoButton">Yo</button>
+    <button id="goodEveningButton">Good Evening</button>
+    <div id="messageContainer"></div>
 
-<style>
-    .color-div {
-        width: 100px;
-        height: 100px;
-        margin: 0px;
-        display: inline-block;
-    }
-</style>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
 
-<script>
-const socket = io();
-
-socket.on('clientCount', count => {
-    document.getElementById('clientCount').textContent = count;
-});
-
-socket.on('clientList', list => {
-    const container = document.getElementById('container');
-    list.forEach(ip => {
-        const button = document.createElement('button');
-        button.textContent = ip;
-        container.appendChild(button);
-        container.appendChild(document.createElement("br"));
-
-        button.addEventListener('click', function() {
-            var newDiv = document.createElement('div');
-            newDiv.classList.add('color-div');
-            newDiv.style.backgroundColor = getRandomColor();
-            container.appendChild(newDiv);
+        socket.on('clientCount', count => {
+            document.getElementById('clientCount').textContent = count;
         });
-    });
-});
 
-function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
-</script>
+        socket.on('yourIP', ip => {
+            document.getElementById('yourIP').textContent = ip;
+        });
 
+        socket.on('yourColor', color => {
+            document.getElementById('yourColor').style.color = color;
+        });
+        
+        // When the button is clicked, emit 'userAction' event
+        document.getElementById('helloButton').addEventListener('click', function() {
+            var actionData = {text: 'Hello'};
+            socket.emit('userAction', actionData);
+        });
+        document.getElementById('yoButton').addEventListener('click', function() {
+            var actionData = {text: 'Yo'};
+            socket.emit('userAction', actionData);
+        });
+        document.getElementById('goodEveningButton').addEventListener('click', function() {
+            var actionData = {text: 'Good Evening'};
+            socket.emit('userAction', actionData);
+        });
+
+        // Handle broadcasted action from the server
+        socket.on('actionBroadcast', function(actionData) {
+            // Update UI or perform any necessary action based on actionData
+            console.log('Received broadcasted action:', actionData);
+            const messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = '';
+            var newH1 = document.createElement('h1');
+            newH1.innerHTML = actionData;
+            messageContainer.appendChild(newH1);
+        });
+    </script>
+</body>
 </html>
