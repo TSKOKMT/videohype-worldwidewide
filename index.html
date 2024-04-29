@@ -24,12 +24,12 @@
         
         //Receive DOM
         socket.on('receiveHTML', function(html) {
-            document.documentElement.outerHTML = html;
+            document.documentElement.innerHTML = html;
         });
 
         //Send DOM
         document.getElementById('sendButton').addEventListener('click', function() {
-            const html = document.documentElement.outerHTML;
+            const html = document.documentElement.innerHTML;
             socket.emit('sendHTML', html);
         });
 
