@@ -25,6 +25,13 @@
         //Receive DOM
         socket.on('receiveHTML', function(html) {
             document.documentElement.innerHTML = html;
+
+            const scripts = document.documentElement.querySelectorAll('script'); // スクリプトタグを見つける
+            scripts.forEach((oldScript) => {
+                const newScript = document.createElement('script'); // 新しいスクリプトタグを作成
+                newScript.text = oldScript.text; // 既存のスクリプトの内容をコピー
+                oldScript.parentNode.replaceChild(newScript, oldScript); // 古いスクリプトを新しいもので置換
+            });
         });
 
         //Send DOM
