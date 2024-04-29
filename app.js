@@ -14,16 +14,9 @@ app.get('/', (req, res) => {
 io.on('connection', (socket) => {
   console.log('A client connected');
 
-  // HTMLデータの受信
+  //Receave & broadcast DOM
   socket.on('sendHTML', (html) => {
     socket.broadcast.emit('receiveHTML', html);
-  });
-
-  //Disconnect
-  socket.on('disconnect', () => {
-    console.log('A client disconnected');
-    clientCount--;
-    clearInterval(heartbeatInterval);
   });
 });
 
