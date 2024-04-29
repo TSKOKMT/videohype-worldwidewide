@@ -6,20 +6,49 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
+let clientCount = 0;
+let data = [];
 
-    // 受け取ったHTMLを他のクライアントにブロードキャストする
-    socket.on('sendHtml', (html) => {
-        socket.broadcast.emit('htmlReceived', html);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('A user disconnected');
-    });
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
 });
 
-const PORT = 3000;
+//Connect
+io.on('connection', (socket) => {
+  console.log('A client connected');
+  clientCount++;
+
+  //Heartbeat
+  const heartbeatInterval = setInterval(() => {
+    if (!socket.connected) {
+      console.log('A client disconnected');
+      clientCount--;
+      clearInterval(heartbeatInterval);
+    }
+  }, 1000);
+
+  //Disconnect
+  socket.on('disconnect', () => {
+    console.log('A client disconnected');
+    clientCount--;
+    clearInterval(heartbeatInterval);
+  });
+
+  //Receive buttonPressed
+  socket.on('buttonPressed', (buttonData) => {
+    console.log('Received from client :', buttonData);
+    data.push([buttonData.text, buttonData.ip]);
+  });
+
+  //Update
+  socket.on('update', () => {
+    io.emit('data', data);
+    io.emit('clientCount', clientCount);
+  });
+});
+
+//Listen
+const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
