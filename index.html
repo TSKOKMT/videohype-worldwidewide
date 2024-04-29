@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIDEO HYPE : World Wide Wide</title>
+
+    <style>
+        div {
+            position: absolute;
+            background-color: rgb(0, 0, 255);
+        }
+    </style>
+
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 
     <script>
@@ -23,12 +31,36 @@
                 const html = document.documentElement.outerHTML;
                 socket.emit('sendHTML', html);
             });
+
+            document.getElementById('generateButton').addEventListener('click', function() {
+                for (let i = 0; i < 12; i++) {
+                    const div = document.createElement('div');
+
+                    // ランダムな位置とサイズを設定
+                    const maxWidth = window.innerWidth - 50;
+                    const maxHeight = window.innerHeight - 50;
+                    const randomWidth = Math.random() * 150 + 50;
+                    const randomHeight = Math.random() * 150 + 50;
+                    const randomX = Math.random() * (maxWidth - randomWidth);
+                    const randomY = Math.random() * (maxHeight - randomHeight);
+
+                    // スタイル設定
+                    div.style.width = `${randomWidth}px`;
+                    div.style.height = `${randomHeight}px`;
+                    div.style.left = `${randomX}px`;
+                    div.style.top = `${randomY}px`;
+
+                    // body要素に追加
+                    document.body.appendChild(div);
+                }
+            });
         });
     </script>
 </head>
 
 <body>
     <button id="sendButton">Send HTML</button>
+    <button id="generateButton">Generate</button>
 </body>
 
 </html>
