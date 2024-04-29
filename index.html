@@ -20,7 +20,7 @@
 
             //Receive DOM
             socket.on('receiveHTML', function(html) {
-                document.documentElement.innerHTML = html;
+                document.documentElement.outerHTML = html;
             });
 
             //Send DOM
