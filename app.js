@@ -13,15 +13,15 @@ let clients = [];  // 配列として初期化
 // Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
-  const clientIP = socket.handshake.headers["x-forwarded-for"] || socket.handshake.address;
-
+  const clientIP = socket.handshake.headers["x-forwarded-for"];
+  
   // Update & send clients
   clients.push({ ip: clientIP });
   io.emit('clients', clients);
 
   socket.on('disconnect', () => {
     // Update & send clients
-    clients = clients.filter(client => client.ip !== clientIP);  // filterを使用して削除
+    clients = clients.filter(client => client.ip !== clientIP);
     io.emit('clients', clients);
   });
 });
