@@ -6,17 +6,24 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
-});
+app.use(express.static('public'));
 
-//Connect
+const messages = [];
+
+//Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
 
-  //Receave & broadcast DOM
-  socket.on('sendHTML', (html) => {
-    socket.broadcast.emit('receiveHTML', html);
+  //Receave & broadcast
+  socket.on('sendMessage', (messageText) => {
+    const newMessage = {
+      clientId: socket.id,
+      text: messageText
+    };
+    messages.push(newMessage);
+    console.log('Saved Message: ', newMessage);
+    
+    io.emit('receiveMessage', newMessage);
   });
 });
 

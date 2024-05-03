@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VIDEO HYPE : World Wide Wide</title>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const socket = io();
+
+                const messagesContainer = document.getElementById('messages');
+                socket.on('receiveMessage', function (data) {
+                    const messageElement = document.createElement('div');
+                    
+                    if (socket.id === data.clientId) {
+                        messageElement.style.textAlign = 'right';
+                    } else {
+                        messageElement.style.textAlign = 'left';
+                    }
+                    messageElement.textContent = data.text;
+                    messagesContainer.appendChild(messageElement);
+                });
+
+                document.getElementById('sendButton').addEventListener('click', function () {
+                    const message = document.getElementById('messageInput').value;
+                    socket.emit('sendMessage', message);
+                    document.getElementById('messageInput').value = '';
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>VIDEO HYPE CHAT !</h1>
+        <div id="messages" style="height: 1000px; overflow-y: scroll;"></div>
+        <input type="text" id="messageInput" placeholder="Enter Message">
+        <button id="sendButton">Send</button>
+    </body>
+
+</html>
