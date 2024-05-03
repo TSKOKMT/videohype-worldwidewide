@@ -12,15 +12,11 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
   console.log('A client connected');
 
-  /*const clientIP = socket.handshake.headers["cf-connecting-ip"];
-
-  socket.emit('hello', clientIP);*/
-
   //Receave & broadcast
-  socket.on('theHTML', (theHTML) => {
-    console.log('Received: ', theHTML);
-    
-    io.emit('theHTML', theHTML);
+  socket.on('mousePosition', (mousePosition) => {
+    console.log('Received: ', mousePosition);
+
+    io.emit('mousePosition', mousePosition);
   });
 });
 
