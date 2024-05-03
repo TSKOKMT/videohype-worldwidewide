@@ -20,25 +20,22 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const socket = io();
 
+                const follower = document.getElementById('follower');
+
                 document.addEventListener('mousemove', function (e) {
-                    var follower = document.getElementById('follower');
                     var mouseX = e.clientX;
                     var mouseY = e.clientY;
-                    follower.style.left = mouseX + 'px';
-                    follower.style.top = mouseY + 'px';
 
                     socket.emit('mousePosition', { mouseX, mouseY });
+
+                    follower.style.left = mouseX + 'px';
+                    follower.style.top = mouseY + 'px';
                 });
 
                 socket.on('mousePosition', function (mousePosition) {
                     follower.style.left = mousePosition.mouseX + 'px';
                     follower.style.top = mousePosition.mouseY + 'px';
                 });
-
-                function loop() {
-                    requestAnimationFrame(loop);
-                }
-                requestAnimationFrame(loop);
             });
         </script>
     </head>

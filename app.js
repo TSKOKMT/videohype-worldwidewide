@@ -14,9 +14,7 @@ io.on('connection', (socket) => {
 
   //Receave & broadcast
   socket.on('mousePosition', (mousePosition) => {
-    console.log('Received: ', mousePosition);
-
-    io.emit('mousePosition', mousePosition);
+    socket.broadcast.emit('mousePosition', mousePosition);
   });
 });
 
