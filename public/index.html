@@ -13,47 +13,59 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            const socket = io();
+            document.addEventListener('DOMContentLoaded', function () {
+                const socket = io();
 
-            const messagesContainer = document.getElementById('messages');
+                const messagesContainer = document.getElementById('messages');
 
-            socket.on('allMessages', function (messages) {
-                for (let i = 0; i < messages.length; i++) {
-                    const theMessage = messages[i];
+                let clientId = localStorage.getItem('clientId');
+                if (!clientId) {
+                    clientId = generateUniqueId();
+                    localStorage.setItem('clientId', clientId);
+                }
 
+                socket.on('allMessages', function (messages) {
+                    for (let i = 0; i < messages.length; i++) {
+                        const theMessage = messages[i];
+
+                        const hrElement = document.createElement('hr');
+                        const messageElement = document.createElement('div');
+
+                        if (clientId === theMessage.clientId) {
+                            messageElement.style.textAlign = 'right';
+                        } else {
+                            messageElement.style.textAlign = 'left';
+                        }
+                        messageElement.textContent = theMessage.text;
+                        messagesContainer.appendChild(hrElement);
+                        messagesContainer.appendChild(messageElement);
+                    }
+                });
+
+                socket.on('newMessage', function (newMessage) {
                     const hrElement = document.createElement('hr');
                     const messageElement = document.createElement('div');
 
-                    if (socket.id === theMessage.clientId) {
+                    if (clientId === newMessage.clientId) {
                         messageElement.style.textAlign = 'right';
                     } else {
                         messageElement.style.textAlign = 'left';
                     }
-                    messageElement.textContent = theMessage.text;
+                    messageElement.textContent = newMessage.text;
                     messagesContainer.appendChild(hrElement);
                     messagesContainer.appendChild(messageElement);
-                }
+                });
+
+                document.getElementById('sendButton').addEventListener('click', function () {
+                    const message = document.getElementById('messageInput').value;
+                    socket.emit('newMessage', { text: message, clientId: clientId });
+                    document.getElementById('messageInput').value = '';
+                });
             });
 
-            socket.on('newMessage', function (newMessage) {
-                const hrElement = document.createElement('hr');
-                const messageElement = document.createElement('div');
-
-                if (socket.id === newMessage.clientId) {
-                    messageElement.style.textAlign = 'right';
-                } else {
-                    messageElement.style.textAlign = 'left';
-                }
-                messageElement.textContent = newMessage.text;
-                messagesContainer.appendChild(hrElement);
-                messagesContainer.appendChild(messageElement);
-            });
-
-            document.getElementById('sendButton').addEventListener('click', function () {
-                const message = document.getElementById('messageInput').value;
-                socket.emit('newMessage', message);
-                document.getElementById('messageInput').value = '';
-            });
+            function generateUniqueId() {
+                return 'id-' + Math.random().toString(36).substr(2, 16);
+            }
         </script>
     </head>
 
