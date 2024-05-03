@@ -20,7 +20,7 @@
 
                 socket.on('clients', clients => {
                     const h1s = document.getElementsByTagName('h1');
-                    h1s.forEach(h1 => h1.remove());
+                    Array.from(h1s).forEach(h1 => h1.remove());
 
                     clients.forEach(client => {
                         const newH1 = document.createElement('h1');

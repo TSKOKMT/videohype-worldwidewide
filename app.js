@@ -8,28 +8,25 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
-let clients = {};
+let clients = [];  // 配列として初期化
 
-//Connection
+// Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
+  const clientIP = socket.handshake.headers["x-forwarded-for"] || socket.handshake.address;
 
-  const clientIP = socket.handshake.headers["cf-connecting-ip"];
-
-  //Update & send clinents
+  // Update & send clients
   clients.push({ ip: clientIP });
   io.emit('clients', clients);
 
   socket.on('disconnect', () => {
-    //Update & send clinents
-    clients.forEach(client => {
-      if (client.ip == clientIP) client.remove();
-    });
+    // Update & send clients
+    clients = clients.filter(client => client.ip !== clientIP);  // filterを使用して削除
     io.emit('clients', clients);
   });
 });
 
-//Listen
+// Listen
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
