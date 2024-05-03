@@ -16,21 +16,47 @@
 @import url("https://p.typekit.net/p.css?s=1&k=dmt7ild&ht=tk&f=14032.14034.21514&a=82565381&app=typekit&e=css");
 
 @font-face {
-font-family:"aktiv-grotesk";
-src:url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
-font-display:auto;font-style:normal;font-weight:400;font-stretch:normal;
+  font-family: "aktiv-grotesk";
+  src: url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+      format("woff2"),
+    url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+      format("woff"),
+    url("https://use.typekit.net/af/ab3e12/000000000000000077359d4f/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3")
+      format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
 }
 
 @font-face {
-font-family:"aktiv-grotesk";
-src:url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
-font-display:auto;font-style:normal;font-weight:700;font-stretch:normal;
+  font-family: "aktiv-grotesk";
+  src: url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+      format("woff2"),
+    url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+      format("woff"),
+    url("https://use.typekit.net/af/a798a9/000000000000000077359d55/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3")
+      format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: normal;
 }
 
 @font-face {
-font-family:"aktiv-grotesk";
-src:url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff2"),url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("woff"),url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3") format("opentype");
-font-display:auto;font-style:normal;font-weight:900;font-stretch:normal;
+  font-family: "aktiv-grotesk";
+  src: url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3")
+      format("woff2"),
+    url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3")
+      format("woff"),
+    url("https://use.typekit.net/af/4a8d64/000000000000000077359d65/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n9&v=3")
+      format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: normal;
 }
 
-.tk-aktiv-grotesk { font-family: "aktiv-grotesk",sans-serif; }
+.tk-aktiv-grotesk {
+  font-family: "aktiv-grotesk", sans-serif;
+}
