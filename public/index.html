@@ -18,6 +18,9 @@
         <script src="/socket.io/socket.io.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                let width = document.documentElement.clientWidth;
+                let height = document.documentElement.clientHeight;
+
                 const socket = io();
 
                 const follower = document.getElementById('follower');
@@ -26,15 +29,20 @@
                     var mouseX = e.clientX;
                     var mouseY = e.clientY;
 
-                    socket.emit('mousePosition', { mouseX, mouseY });
+                    socket.emit('mousePosition', { mouseX: mouseX / width, mouseY: mouseY / height });
 
                     follower.style.left = mouseX + 'px';
                     follower.style.top = mouseY + 'px';
                 });
 
                 socket.on('mousePosition', function (mousePosition) {
-                    follower.style.left = mousePosition.mouseX + 'px';
-                    follower.style.top = mousePosition.mouseY + 'px';
+                    follower.style.left = mousePosition.mouseX * width + 'px';
+                    follower.style.top = mousePosition.mouseY * height + 'px';
+                });
+
+                window.addEventListener('resize', function(event) {
+                    width = document.documentElement.clientWidth;
+                    height = document.documentElement.clientHeight;
                 });
             });
         </script>
