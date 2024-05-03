@@ -7,12 +7,6 @@
         <title>VIDEO HYPE : World Wide Wide</title>
 
         <style>
-            div {
-                background-color: magenta;
-                position: absolute;
-                width: 100px;
-                height: 100px;
-            }
         </style>
 
         <script src="/socket.io/socket.io.js"></script>
@@ -20,36 +14,28 @@
             document.addEventListener('DOMContentLoaded', function () {
                 let width = document.documentElement.clientWidth;
                 let height = document.documentElement.clientHeight;
+                window.addEventListener('resize', function (event) {
+                    width = document.documentElement.clientWidth;
+                    height = document.documentElement.clientHeight;
+                });
 
                 const socket = io();
 
-                const follower = document.getElementById('follower');
+                socket.on('clients', clients => {
+                    const h1s = document.getElementsByTagName('h1');
+                    h1s.forEach(h1 => h1.remove());
 
-                document.addEventListener('mousemove', function (e) {
-                    var mouseX = e.clientX;
-                    var mouseY = e.clientY;
-
-                    socket.emit('mousePosition', { mouseX: mouseX / width, mouseY: mouseY / height });
-
-                    follower.style.left = mouseX + 'px';
-                    follower.style.top = mouseY + 'px';
-                });
-
-                socket.on('mousePosition', function (mousePosition) {
-                    follower.style.left = mousePosition.mouseX * width + 'px';
-                    follower.style.top = mousePosition.mouseY * height + 'px';
-                });
-
-                window.addEventListener('resize', function(event) {
-                    width = document.documentElement.clientWidth;
-                    height = document.documentElement.clientHeight;
+                    clients.forEach(client => {
+                        const newH1 = document.createElement('h1');
+                        newH1.textContent = client.ip;
+                        document.body.appendChild(newH1);
+                    });
                 });
             });
         </script>
     </head>
 
     <body>
-        <div id="follower"></div>
     </body>
 
 </html>

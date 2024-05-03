@@ -8,13 +8,19 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
+let clients = {};
+
 //Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
 
-  //Receave & broadcast
-  socket.on('mousePosition', (mousePosition) => {
-    socket.broadcast.emit('mousePosition', mousePosition);
+  const clientIP = socket.handshake.headers["cf-connecting-ip"];
+  clients[socket.id].ip = clientIP;
+  io.emit('clients', clients);
+
+  socket.on('disconnect', () => {
+    delete clients[socket.id];
+    io.emit('clients', clients);
   });
 });
 
