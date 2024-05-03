@@ -16,6 +16,7 @@
                 margin: 8px;
                 background-color: white;
                 color: magenta;
+                font-size: 24px;
             }
         </style>
 
@@ -27,13 +28,12 @@
                 const messagesContainer = document.getElementById('messages');
 
                 let clientId;
-                socket.on('yourIP', function (clientIP) {
-                    clientId = clientIP;
-                });
 
-                socket.on('allMessages', function (messages) {
-                    for (let i = 0; i < messages.length; i++) {
-                        const theMessage = messages[i];
+                socket.on('hello', function (data) {
+                    clientId = data.clientIP;
+
+                    for (let i = 0; i < data.messages.length; i++) {
+                        const theMessage = data.messages[i];
 
                         const hrElement = document.createElement('hr');
                         const messageElement = document.createElement('div');
@@ -43,7 +43,7 @@
                         } else {
                             messageElement.style.textAlign = 'left';
                         }
-                        messageElement.textContent = theMessage.text;
+                        messageElement.textContent = theMessage.text + ' (' + theMessage.clientId + ')';
                         messagesContainer.appendChild(hrElement);
                         messagesContainer.appendChild(messageElement);
                     }
@@ -58,7 +58,7 @@
                     } else {
                         messageElement.style.textAlign = 'left';
                     }
-                    messageElement.textContent = newMessage.text + ' : ' + newMessage.clientId;
+                    messageElement.textContent = newMessage.text + ' (' + newMessage.clientId + ')';
                     messagesContainer.appendChild(hrElement);
                     messagesContainer.appendChild(messageElement);
                 });
@@ -74,7 +74,7 @@
 
     <body>
         <h1>VIDEO HYPE CHAT !</h1>
-        <div id="messages" style="height: 500px; overflow-y: scroll;"></div>
+        <div id="messages" style="height: 550px; overflow-y: scroll;"></div>
         <input type="text" id="messageInput" placeholder="Enter Message">
         <button id="sendButton">Send</button>
     </body>

@@ -15,10 +15,8 @@ io.on('connection', (socket) => {
   console.log('A client connected');
 
   const clientIP = socket.handshake.headers["cf-connecting-ip"];
-  socket.emit('yourIP', clientIP);
-
-  //Once send all messages
-  socket.emit('allMessages', messages);
+  
+  socket.emit('hello', { messages, clientIP });
 
   //Receave & broadcast
   socket.on('newMessage', (text) => {
