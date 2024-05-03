@@ -14,8 +14,11 @@ const messages = [];
 io.on('connection', (socket) => {
   console.log('A client connected');
 
+  //Once send all messages
+  io.emit('allMessages', messages);
+
   //Receave & broadcast
-  socket.on('sendMessage', (messageText) => {
+  socket.on('newMessage', (messageText) => {
     const newMessage = {
       clientId: socket.id,
       text: messageText
@@ -23,7 +26,7 @@ io.on('connection', (socket) => {
     messages.push(newMessage);
     console.log('Saved Message: ', newMessage);
     
-    io.emit('receiveMessage', newMessage);
+    io.emit('newMessage', newMessage);
   });
 });
 
