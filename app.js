@@ -15,17 +15,18 @@ io.on('connection', (socket) => {
   console.log('A client connected');
 
   const clientIP = socket.handshake.headers["cf-connecting-ip"];
+
+  //Update & send clinents
   clients.push({ ip: clientIP });
   io.emit('clients', clients);
 
-  /*if (!clients[socket.id]) clients[socket.id] = { ip: 0 };
-  clients[socket.id].ip = clientIP;
-  io.emit('clients', clients);
-
   socket.on('disconnect', () => {
-    delete clients[socket.id];
+    //Update & send clinents
+    clients.forEach(client => {
+      if (client.ip == clientIP) client.remove();
+    });
     io.emit('clients', clients);
-  });*/
+  });
 });
 
 //Listen
