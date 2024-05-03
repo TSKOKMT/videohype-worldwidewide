@@ -8,23 +8,19 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
-const messages = [];
-
 //Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
 
-  const clientIP = socket.handshake.headers["cf-connecting-ip"];
-  
-  socket.emit('hello', { messages, clientIP });
+  /*const clientIP = socket.handshake.headers["cf-connecting-ip"];
+
+  socket.emit('hello', clientIP);*/
 
   //Receave & broadcast
-  socket.on('newMessage', (text) => {
-    const newMessage = { text, clientId: clientIP };
-    messages.push(newMessage);
-    console.log('Saved Message: ', newMessage);
+  socket.on('theHTML', (theHTML) => {
+    console.log('Received: ', theHTML);
     
-    io.emit('newMessage', newMessage);
+    io.emit('theHTML', theHTML);
   });
 });
 

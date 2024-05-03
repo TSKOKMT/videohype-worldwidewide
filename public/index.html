@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>VIDEO HYPE : World Wide Wide</title>
-
-        <link href="index.css" rel="stylesheet">
-        <link href="dmt7ild.css" rel="stylesheet">
-        <link href="flickity.css" rel="stylesheet">
-        <link href="www-player.css" rel="stylesheet">
+        <title>Maximum Offset Touching Divs</title>
 
         <style>
             body {
-                padding: 10px;
-                background-color: white;
-                color: magenta;
-                font-size: 24px;
+                position: relative;
+                width: 100vw;
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                font-size: 30px;
+                line-height: 75%;
+                letter-spacing: -0.14em;
+            }
+
+            .random-div {
+                position: absolute;
+                word-wrap: break-word;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            p {
+                margin: 15px;
+                text-align: center;
+            }
+
+            a {
+                position: absolute;
+                display: block;
+                width: 100%;
+                height: 100%;
             }
         </style>
 
@@ -25,58 +46,154 @@
             document.addEventListener('DOMContentLoaded', function () {
                 const socket = io();
 
-                const messagesContainer = document.getElementById('messages');
+                var frameWidth = document.documentElement.clientWidth;
+                var frameHeight = document.documentElement.clientHeight;
 
-                let clientId;
+                const container = document.body;
+                const numOfDivs = 30;
+                const minWidth = 30;
+                const maxWidth = 600;
+                const minHeight = 30;
+                const maxHeight = 600;
+                const divs = [];
+                const colors = [];
 
-                socket.on('hello', function (data) {
-                    clientId = data.clientIP;
+                function getRandomColor() {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    return `rgb(${r},${g},${b})`;
+                }
 
-                    for (let i = 0; i < data.messages.length; i++) {
-                        const theMessage = data.messages[i];
+                for (let i = 0; i < 3; i++) {
+                    colors.push(getRandomColor());
+                }
 
-                        const hrElement = document.createElement('hr');
-                        const messageElement = document.createElement('div');
+                function randomR(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
 
-                        if (clientId === theMessage.clientId) {
-                            messageElement.style.textAlign = 'right';
-                        } else {
-                            messageElement.style.textAlign = 'left';
+                function isOverlapping(testDiv, others) {
+                    for (let other of others) {
+                        if (other.left < testDiv.left + testDiv.width &&
+                            testDiv.left < other.left + other.width &&
+                            other.top < testDiv.top + testDiv.height &&
+                            testDiv.top < other.top + other.height) {
+                            return true;
                         }
-                        messageElement.textContent = theMessage.text + ' (' + theMessage.clientId + ')';
-                        messagesContainer.appendChild(hrElement);
-                        messagesContainer.appendChild(messageElement);
                     }
-                });
+                    return false;
+                }
 
-                socket.on('newMessage', function (newMessage) {
-                    const hrElement = document.createElement('hr');
-                    const messageElement = document.createElement('div');
-
-                    if (clientId === newMessage.clientId) {
-                        messageElement.style.textAlign = 'right';
-                    } else {
-                        messageElement.style.textAlign = 'left';
+                function isInside(testDiv, parentDiv) {
+                    if (testDiv.left + testDiv.width < parentDiv.left + parentDiv.width &&
+                        parentDiv.left < testDiv.left &&
+                        testDiv.top + testDiv.height < parentDiv.top + parentDiv.height &&
+                        parentDiv.top < testDiv.top) {
+                        return true;
                     }
-                    messageElement.textContent = newMessage.text + ' (' + newMessage.clientId + ')';
-                    messagesContainer.appendChild(hrElement);
-                    messagesContainer.appendChild(messageElement);
+                    return false;
+                }
+
+                const containerDiv = { left: 0, top: 0, width: frameWidth, height: frameHeight };
+
+                for (let i = 0; i < numOfDivs; i++) {
+                    let top;
+                    let left;
+                    let width;
+                    let height;
+
+                    let loopCount = 0;
+                    const maxLoopCount = 10000;
+
+                    let newDivP;
+                    do {
+                        //Random size
+                        width = randomR(minWidth, maxWidth);
+                        height = randomR(minHeight, maxHeight);
+
+                        //Random position
+                        if (divs.length > 0) {
+                            const lastDiv = divs[divs.length - 1];
+                            const side = Math.floor(Math.random() * 4);
+                            switch (side) {
+                                case 0:
+                                    top = lastDiv.top - height;
+                                    left = lastDiv.left + Math.random() * lastDiv.width - width * Math.random();
+                                    break;
+                                case 1:
+                                    top = lastDiv.top + Math.random() * lastDiv.height - height * Math.random();
+                                    left = lastDiv.left + lastDiv.width;
+                                    break;
+                                case 2:
+                                    top = lastDiv.top + lastDiv.height;
+                                    left = lastDiv.left + Math.random() * lastDiv.width - width * Math.random();
+                                    break;
+                                case 3:
+                                    top = lastDiv.top + Math.random() * lastDiv.height - height * Math.random();
+                                    left = lastDiv.left - width;
+                                    break;
+                            }
+                        } else {
+                            left = Math.random() * (frameWidth - width);
+                            top = Math.random() * (frameHeight - height);
+                        }
+
+                        //Set newDivP
+                        newDivP = { top, left, width, height };
+
+                        loopCount++;
+                    } while (loopCount < maxLoopCount && divs.length > 0 && isOverlapping(newDivP, divs) && isInside(newDivP, containerDiv));
+
+                    //Create newDiv
+                    const newDiv = document.createElement('div');
+                    newDiv.classList.add('random-div');
+                    newDiv.style.backgroundColor = colors[i % colors.length];
+                    newDiv.style.top = `${top}px`;
+                    newDiv.style.left = `${left}px`;
+                    newDiv.style.width = `${width}px`;
+                    newDiv.style.height = `${height}px`;
+                    container.appendChild(newDiv);
+
+                    //Create newP
+                    const newP = document.createElement('p');
+                    newP.innerText = 'W o r l d \xa0 W i d e \xa0 W i d e';
+                    newDiv.appendChild(newP);
+
+                    //Create a
+                    var a = document.createElement("a");
+                    a.href = "https://www.example.com";
+                    newDiv.appendChild(a);
+
+                    //Push
+                    divs.push(newDivP);
+                }
+
+                //Send theHTML
+                const theHTML = document.documentElement.innerHTML;
+                socket.emit('theHTML', theHTML);
+
+                //Receive theHTML
+                socket.on('theHTML', function (theHTML) {
+                    document.documentElement.innerHTML = theHTML;
+                    renewScripts();
                 });
 
-                document.getElementById('sendButton').addEventListener('click', function () {
-                    const text = document.getElementById('messageInput').value;
-                    socket.emit('newMessage', text);
-                    document.getElementById('messageInput').value = '';
-                });
+                function renewScripts() {
+                const scripts = document.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    const oldScript = scripts[i];
+                    const newScript = document.createElement('script');
+                    if (oldScript.src) newScript.src = oldScript.src;
+                    else newScript.text = oldScript.text;
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                };
+            }
             });
         </script>
     </head>
 
     <body>
-        <h1>VIDEO HYPE CHAT !</h1>
-        <div id="messages" style="height: 550px; overflow-y: scroll;"></div>
-        <input type="text" id="messageInput" placeholder="Enter Message">
-        <button id="sendButton">Send</button>
     </body>
 
 </html>
