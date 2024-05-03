@@ -15,7 +15,7 @@ io.on('connection', (socket) => {
   console.log('A client connected');
 
   const clientIP = socket.handshake.headers["cf-connecting-ip"];
-  if (!clients[socket.id]) clients[socket.id] = {};
+  if (!clients[socket.id]) clients[socket.id] = { ip:0 };
   clients[socket.id].ip = clientIP;
   io.emit('clients', clients);
 
