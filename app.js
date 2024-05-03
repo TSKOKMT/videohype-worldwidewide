@@ -8,15 +8,15 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
-let clients = [];  // 配列として初期化
+let clients = [];
 
 // Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
-  const clientIP = socket.handshake.headers["x-forwarded-for"];
-  
+  const clientIP = socket.handshake.headers["cf-connecting-ip"];
+
   // Update & send clients
-  clients.push({ ip: clientIP });
+  clients.push({ id: socket.id, ip: clientIP });
   io.emit('clients', clients);
 
   socket.on('disconnect', () => {

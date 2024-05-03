@@ -24,7 +24,7 @@
 
                     clients.forEach(client => {
                         const newH1 = document.createElement('h1');
-                        newH1.textContent = client.ip;
+                        newH1.textContent = 'id: ' + client.id + ', ip: ' + client.ip;
                         document.body.appendChild(newH1);
                     });
                 });
