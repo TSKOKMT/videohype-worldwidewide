@@ -17,6 +17,15 @@
                 letter-spacing: -0.12em;
             }
 
+            h2 {
+                position: fixed;
+                font-size: 50vh;
+                font-family: Arial, Helvetica, sans-serif;
+                left: 50svw;
+                top: 50svh;
+                transform: translate(-50%, -120%);
+            }
+
             div {
                 position: absolute;
                 margin: 0px;
@@ -73,12 +82,12 @@
                 theSpan.style.width = width;
                 theSpan.style.height = height;
 
-                const buttons = document.getElementsByTagName('button');
+                /*const buttons = document.getElementsByTagName('button');
                 var buttonLength = buttons.length;
                 for (var i = 0; i < buttonLength; i++) {
                     buttons[i].style.left = width / 2 - 180 + (i * 2 - 1) * 180 * 1.5 + 'px';
                     buttons[i].style.top = height / 2 - 30 + 'px';
-                }
+                }*/
 
                 //Remove
                 const divs = document.getElementsByTagName('div');
@@ -100,7 +109,7 @@
                 ys.push(0);
                 widthes.push(width);
                 heights.push(height);
-                for (var i = 0; i < clientCount; i++) {
+                for (var i = 0; i < Math.min(clientCount, 10); i++) {
                     var xsLength = xs.length;
                     for (var j = 0; j < xsLength; j++) {
                         var ratio = (Math.sin(time * (1 + (i * j) / 18) + i + j) + 1) * 0.3 + 0.2;
@@ -145,6 +154,9 @@
                     newDiv.appendChild(p);
                 }
 
+                const countTextElement = document.getElementById("countText");
+                countTextElement.innerHTML = clientCount;
+
                 requestAnimationFrame(loop);
             }
             requestAnimationFrame(loop);
@@ -157,6 +169,7 @@
 
     <body>
         <span></span>
+        <h2 id="countText">1</h2>
         <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
     </body>
 
