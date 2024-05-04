@@ -86,6 +86,8 @@
             }
 
             document.addEventListener('DOMContentLoaded', function () {
+                setInterval(location.reload(), 4000);
+
                 const socket = io();
 
                 var frameWidth = document.documentElement.clientWidth;
