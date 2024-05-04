@@ -31,6 +31,10 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
             document.addEventListener("DOMContentLoaded", function () {
                 const socket = io();
 
@@ -58,10 +62,6 @@
 
                     window.location.href = 'index.html';
                 });
-
-                function randomR(min, max) {
-                    return Math.random() * (max - min) + min;
-                }
             });
         </script>
     </head>
