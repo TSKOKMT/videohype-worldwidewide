@@ -1,31 +1,34 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>VIDEO HYPE : World Wide Wide</title>
-
         <style>
-            body,
-            html {
-                margin: 0;
-                padding: 0;
-            }
-
-            .box {
-                position: absolute;
-                width: 20%;
-                height: 20%;
-                transform: translate(-50%, -50%);
-                background-color: transparent;
-                border: 1px solid #000000;
-            }
-
-            #container {
-                position: fixed;
+            body {
+                position: relative;
                 width: 100vw;
                 height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                font-family: Arial, sans-serif;
+                font-size: 30px;
+                line-height: 75%;
+                letter-spacing: -0.14em;
+            }
+
+            .random-div {
+                position: absolute;
+                word-wrap: break-word;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            p {
+                margin: 15px;
+                text-align: center;
             }
 
             a {
@@ -38,43 +41,140 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const boxes = document.getElementsByClassName('box');
-                for (let i = 0; i < boxes.length; i++) {
-                    const randomX = randomR(10, 100 - 10);
-                    const randomY = randomR(10, 100 - 10);
-                    boxes[i].style.left = `${randomX}%`;
-                    boxes[i].style.top = `${randomY}%`;
+            document.addEventListener('DOMContentLoaded', function () {
+                const socket = io();
+
+                var frameWidth = document.documentElement.clientWidth;
+                var frameHeight = document.documentElement.clientHeight;
+
+                const container = document.body;
+                const numOfDivs = 30;
+                const minWidth = 30;
+                const maxWidth = 600;
+                const minHeight = 30;
+                const maxHeight = 600;
+                const divs = [];
+                const colors = [];
+
+                function getRandomColor() {
+                    const r = Math.floor(Math.random() * 256);
+                    const g = Math.floor(Math.random() * 256);
+                    const b = Math.floor(Math.random() * 256);
+                    return `rgb(${r},${g},${b})`;
                 }
 
-                const socket = io();
-            });
+                for (let i = 0; i < 3; i++) {
+                    colors.push(getRandomColor());
+                }
 
-            function randomR(min, max) {
-                return Math.random() * (max - min) + min;
-            }
+                function randomR(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                function isOverlapping(testDiv, others) {
+                    for (let other of others) {
+                        if (other.left < testDiv.left + testDiv.width &&
+                            testDiv.left < other.left + other.width &&
+                            other.top < testDiv.top + testDiv.height &&
+                            testDiv.top < other.top + other.height) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                function isInside(testDiv, parentDiv) {
+                    if (testDiv.left + testDiv.width < parentDiv.left + parentDiv.width &&
+                        parentDiv.left < testDiv.left &&
+                        testDiv.top + testDiv.height < parentDiv.top + parentDiv.height &&
+                        parentDiv.top < testDiv.top) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                const containerDiv = { left: 0, top: 0, width: frameWidth, height: frameHeight };
+
+                for (let i = 0; i < numOfDivs; i++) {
+                    let top;
+                    let left;
+                    let width;
+                    let height;
+
+                    let loopCount = 0;
+                    const maxLoopCount = 10000;
+
+                    let newDivP;
+                    do {
+                        //Random size
+                        width = randomR(minWidth, maxWidth);
+                        height = randomR(minHeight, maxHeight);
+
+                        //Random position
+                        if (divs.length > 0) {
+                            const lastDiv = divs[divs.length - 1];
+                            const side = Math.floor(Math.random() * 4);
+                            switch (side) {
+                                case 0:
+                                    top = lastDiv.top - height;
+                                    left = lastDiv.left + Math.random() * lastDiv.width - width * Math.random();
+                                    break;
+                                case 1:
+                                    top = lastDiv.top + Math.random() * lastDiv.height - height * Math.random();
+                                    left = lastDiv.left + lastDiv.width;
+                                    break;
+                                case 2:
+                                    top = lastDiv.top + lastDiv.height;
+                                    left = lastDiv.left + Math.random() * lastDiv.width - width * Math.random();
+                                    break;
+                                case 3:
+                                    top = lastDiv.top + Math.random() * lastDiv.height - height * Math.random();
+                                    left = lastDiv.left - width;
+                                    break;
+                            }
+                        } else {
+                            left = Math.random() * (frameWidth - width);
+                            top = Math.random() * (frameHeight - height);
+                        }
+
+                        //Set newDivP
+                        newDivP = { top, left, width, height };
+
+                        loopCount++;
+                    } while (loopCount < maxLoopCount && divs.length > 0 && isOverlapping(newDivP, divs) && isInside(newDivP, containerDiv));
+
+                    //Create newDiv
+                    const newDiv = document.createElement('div');
+                    newDiv.classList.add('random-div');
+                    newDiv.style.backgroundColor = colors[i % colors.length];
+                    newDiv.style.top = `${top}px`;
+                    newDiv.style.left = `${left}px`;
+                    newDiv.style.width = `${width}px`;
+                    newDiv.style.height = `${height}px`;
+                    container.appendChild(newDiv);
+
+                    //Create newP
+                    const newP = document.createElement('p');
+                    newP.innerText = 'W o r l d \xa0 W i d e \xa0 W i d e';
+                    newDiv.appendChild(newP);
+
+                    //Create a
+                    var a = document.createElement("a");
+                    a.href = "https://www.example.com";
+                    newDiv.appendChild(a);
+
+                    //Push
+                    divs.push(newDivP);
+                }
+
+                //Send theHTML
+                const theHTML = document.documentElement.innerHTML;
+                socket.emit('theHTML', theHTML);
+            });
         </script>
     </head>
 
     <body>
-        <div id="container">
-            <div class="box">
-                IMAGE CHAT
-                <a href="imageChat/index.html"></a>
-            </div>
-            <div class="box">
-                INFINITY RECT
-                <a href="infinityRect/index.html"></a>
-            </div>
-            <div class="box">
-                COUNT PEOPLE
-                <a href="countPeople/index.html"></a>
-            </div>
-            <!-- <div class="box">
-                WATCH DOG
-                <a href="watchDog/index.html"></a>
-            </div> -->
-        </div>
     </body>
 
 </html>
