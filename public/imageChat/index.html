@@ -18,6 +18,28 @@
                 color: magenta;
                 font-size: 24px;
             }
+
+            img {
+                display: inline-block;
+                height: 100px;
+            }
+
+            #messages {
+                display: block;
+                height: 550px;
+                overflow-y: scroll;
+            }
+
+            .message {
+                width: 100%;
+                display: block;
+                text-align: right;
+            }
+
+            .image-button {
+                cursor: pointer;
+                margin: 5px;
+            }
         </style>
 
         <script src="/socket.io/socket.io.js"></script>
@@ -31,29 +53,53 @@
 
                 const messagesContainer = document.getElementById('messages');
 
-                let clientId;
+                let clientID;
 
                 socket.on('hello', function (data) {
-                    clientId = data.clientIP;
+                    clientID = data.clientIP;
 
                     for (let i = 0; i < data.messages.length; i++) {
                         const theMessage = data.messages[i];
 
+                        const messageContainer = document.createElement('div');
                         const hrElement = document.createElement('hr');
-                        const messageElement = document.createElement('div');
+                        const imgElement = document.createElement('img');
 
-                        if (clientId === theMessage.clientId) {
-                            messageElement.style.textAlign = 'right';
+                        messageContainer.classList.add('message');
+
+                        if (clientID === theMessage.clientID) {
+                            imgElement.style.textAlign = 'right';
                         } else {
-                            messageElement.style.textAlign = 'left';
+                            imgElement.style.textAlign = 'left';
                         }
-                        messageElement.textContent = theMessage.text + ' (' + theMessage.clientId + ')';
-                        messagesContainer.appendChild(hrElement);
-                        messagesContainer.appendChild(messageElement);
+                        imgElement.src = '../asset/3d/' + theMessage.imageID + '.gif';
+
+                        messagesContainer.appendChild(messageContainer);
+                        messageContainer.appendChild(hrElement);
+                        messageContainer.appendChild(imgElement);
                     }
                 });
 
                 socket.on('newMessage', function (newMessage) {
+                    const messageContainer = document.createElement('div');
+                    const hrElement = document.createElement('hr');
+                    const imgElement = document.createElement('img');
+
+                    messageContainer.classList.add('message');
+
+                    if (clientID === newMessage.clientID) {
+                        imgElement.style.textAlign = 'right';
+                    } else {
+                        imgElement.style.textAlign = 'left';
+                    }
+                    imgElement.src = '../asset/3d/' + newMessage.imageID + '.gif';
+
+                    messagesContainer.appendChild(messageContainer);
+                    messageContainer.appendChild(hrElement);
+                    messageContainer.appendChild(imgElement);
+                });
+
+                /*socket.on('newMessage', function (newMessage) {
                     const hrElement = document.createElement('hr');
                     const messageElement = document.createElement('div');
 
@@ -65,22 +111,30 @@
                     messageElement.textContent = newMessage.text + ' (' + newMessage.clientId + ')';
                     messagesContainer.appendChild(hrElement);
                     messagesContainer.appendChild(messageElement);
-                });
+                });*/
 
-                document.getElementById('sendButton').addEventListener('click', function () {
+                /*document.getElementById('sendButton').addEventListener('click', function () {
                     const text = document.getElementById('messageInput').value;
                     socket.emit('newMessage', text);
                     document.getElementById('messageInput').value = '';
-                });
+                });*/
+
+                function sendImage(imageID) {
+                    socket.emit('imageID', imageID);
+                }
             });
         </script>
     </head>
 
     <body>
         <h1>VIDEO HYPE CHAT !</h1>
-        <div id="messages" style="height: 550px; overflow-y: scroll;"></div>
-        <input type="text" id="messageInput" placeholder="Enter Message">
-        <button id="sendButton">Send</button>
+        <div id="messages">
+        </div>
+        <!-- <input type="text" id="messageInput" placeholder="Enter Message">
+        <button id="sendButton">Send</button> -->
+        <img src="../asset/3d/0.gif" class="image-button" onclick="sendImage(0)">
+        <img src="../asset/3d/1.gif" class="image-button" onclick="sendImage(1)">
+        <img src="../asset/3d/2.gif" class="image-button" onclick="sendImage(2)">
     </body>
 
 </html>
