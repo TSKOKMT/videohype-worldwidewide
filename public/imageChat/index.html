@@ -36,11 +36,13 @@
             }
 
             #container {
-                position: absolute;
+                margin: 0px;
+                padding: 0px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                height: 100vh;
+                width: 100vw;
+                height: 100svh;
             }
 
             .message {
@@ -116,15 +118,19 @@
                         const messageContainer = document.createElement('div');
                         const hrElement = document.createElement('hr');
                         const imgElement = document.createElement('img');
+                        const pElement = document.createElement('p');
 
                         messageContainer.classList.add('message');
                         messageContainer.style.textAlign = (clientID === theMessage.clientID) ? 'right' : 'left';
 
                         imgElement.src = theMessage.imageSrc;
 
+                        pElement.textContent = theMessage.timeString;
+
                         messagesContainer.appendChild(messageContainer);
                         messageContainer.appendChild(hrElement);
                         messageContainer.appendChild(imgElement);
+                        messageContainer.appendChild(pElement);
 
                         updateScroll();
                     }
@@ -134,15 +140,19 @@
                     const messageContainer = document.createElement('div');
                     const hrElement = document.createElement('hr');
                     const imgElement = document.createElement('img');
+                    const pElement = document.createElement('p');
 
                     messageContainer.classList.add('message');
                     messageContainer.style.textAlign = (clientID === newMessage.clientID) ? 'right' : 'left';
 
                     imgElement.src = newMessage.imageSrc;
 
+                    pElement.textContent = newMessage.timeString;
+
                     messagesContainer.appendChild(messageContainer);
                     messageContainer.appendChild(hrElement);
                     messageContainer.appendChild(imgElement);
+                    messageContainer.appendChild(pElement);
 
                     updateScroll();
                 });
@@ -167,14 +177,14 @@
                     document.getElementById('messageInput').value = '';
                 });*/
 
-                function loop() {
+                /*function loop() {
                     const containerElement = document.getElementById('container');
                     containerElement.style.width = window.innerWidth;
                     containerElement.style.height = window.innerHeight;
 
                     requestAnimationFrame(loop);
                 }
-                requestAnimationFrame(loop);
+                requestAnimationFrame(loop);*/
             });
 
             function randomR(min, max) {
@@ -192,7 +202,20 @@
 
             function sendImage(imageSrc) {
                 console.log(imageSrc);
-                socket.emit('imageSrc', imageSrc);
+
+                const now = new Date();
+                const options = {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false  // 24時間表記
+                };
+                const timeString = now.toLocaleString('ja-JP', options);
+
+                socket.emit('newMessage', { imageSrc, timeString });
             }
 
             function randomImageName() {

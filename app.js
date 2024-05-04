@@ -38,8 +38,8 @@ io.on('connection', (socket) => {
       io.emit('newMessage', newMessage);
     });*/
 
-    socket.on('imageSrc', (imageSrc) => {
-      const newMessage = { imageSrc, clientID: clientIP };
+    socket.on('newMessage', (newMessage) => {
+      const newMessage = { imageSrc: newMessage.imageSrc, timeString: newMessage.timeString, clientID: clientIP };
       messages.push(newMessage);
       io.emit('newMessage', newMessage);
     });
