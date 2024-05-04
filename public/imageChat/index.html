@@ -44,8 +44,10 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            let socket;
+
             document.addEventListener('DOMContentLoaded', function () {
-                const socket = io({
+                socket = io({
                     query: {
                         appId: 'imageChat'
                     }
@@ -118,11 +120,12 @@
                     socket.emit('newMessage', text);
                     document.getElementById('messageInput').value = '';
                 });*/
-
-                function sendImage(imageID) {
-                    socket.emit('imageID', imageID);
-                }
             });
+
+            function sendImage(imageID) {
+                console.log(imageID);
+                socket.emit('imageID', imageID);
+            }
         </script>
     </head>
 
