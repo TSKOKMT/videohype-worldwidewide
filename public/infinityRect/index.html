@@ -57,6 +57,14 @@
                 height: 6vh;
             }
 
+            #reloadButton {
+                position: absolute;
+                top: 10px;
+                left: calc(10px + 18vh + 10px);
+                width: 18vh;
+                height: 6vh;
+            }
+
             #homeButton {
                 position: absolute;
                 top: 10px;
@@ -70,7 +78,7 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 const container = document.getElementById('container');
-                container.style.backgroundColor = getRandomColor();
+                setRandomGradient(container);
 
                 const boxes = document.getElementsByClassName('box');
                 for (let i = 0; i < boxes.length; i++) {
@@ -104,7 +112,7 @@
                 //boxes[1].innerHTML = sessionStorage.getItem('content');
                 socket.emit('pleaseContent', '');
                 socket.on('content', (content) => {
-                    boxes[0].outerHTML = content;
+                    boxes[0].innerHTML = content;
 
                     resizeIframes();
                 });
@@ -136,10 +144,34 @@
 
             function getRandomColor() {
                 const h = Math.floor(Math.random() * 360);
+                /*const s = Math.floor(randomR(90, 100));
+                const l = Math.floor(randomR(50, 60));*/
                 const s = Math.floor(randomR(90, 100));
-                const l = Math.floor(randomR(50, 60));
+                const l = Math.floor(randomR(50, 90));
                 return `hsl(${h},${s}%,${l}%)`;
             }
+
+            function setRandomGradient(element) {
+                // 5つのランダムな色を生成
+                const color1 = getRandomColor();
+                const color2 = getRandomColor();
+                const color3 = getRandomColor();
+                const color4 = getRandomColor();
+                const color5 = getRandomColor();
+                const angle = Math.floor(Math.random() * 360); // グラデーションの角度もランダムに決定
+                const type = Math.random() > 0.5 ? 'linear-gradient' : 'radial-gradient';
+                let gradient;
+
+                if (type === 'linear-gradient') {
+                    gradient = `${type}(${angle}deg, ${color1}, ${color2}, ${color3}, ${color4}, ${color5})`;
+                } else {
+                    gradient = `${type}(circle, ${color1} 20%, ${color2} 40%, ${color3} 60%, ${color4} 80%, ${color5} 100%)`;
+                }
+
+                element.style.backgroundImage = gradient;
+            }
+
+
 
             function isOverlapping(box1, box2) {
                 const rect1 = box1.getBoundingClientRect();
@@ -188,7 +220,8 @@
             </div>
         </div>
         <button id="myButton">クリックしてね</button>
-        <button id="homeButton" href="../index.html">HOME</button>
+        <button id="reloadButton" onclick="location.href='./index.html';">再生成</button>
+        <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
     </body>
 
 </html>
