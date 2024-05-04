@@ -8,21 +8,22 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
-let clients = [];
+let contents = [];
 
 // Connection
 io.on('connection', (socket) => {
   console.log('A client connected');
-  const clientIP = socket.handshake.headers["cf-connecting-ip"];
 
-  // Update & send clients
-  clients.push({ id: socket.id, ip: clientIP });
-  io.emit('clients', clients);
+  socket.on('pleaseContent', () => {
+    io.emit('content', contents[contents.length - 1]);
+  });
+
+  socket.on('content', (content) => {
+    contents.push(content);
+    //io.emit('content', content);
+  });
 
   socket.on('disconnect', () => {
-    // Update & send clients
-    clients = clients.filter(client => client.id !== socket.id);
-    io.emit('clients', clients);
   });
 });
 

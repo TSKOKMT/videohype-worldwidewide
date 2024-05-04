@@ -1,48 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>VIDEO HYPE : World Wide Wide</title>
+        <title>Grid Layout</title>
+
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+            }
+
+            .box {
+                position: absolute;
+                width: 30%;
+                height: 30%;
+                transform: translate(-50%, -50%);
+                background-color: transparent;
+                border: 1px solid #000000;
+            }
+
+            #container {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                let width = document.documentElement.clientWidth;
-                let height = document.documentElement.clientHeight;
-                window.addEventListener('resize', function (event) {
-                    width = document.documentElement.clientWidth;
-                    height = document.documentElement.clientHeight;
-                });
-
+            document.addEventListener("DOMContentLoaded", function () {
                 const socket = io();
 
-                socket.on('clients', clients => {
-                    /*const h1s = document.getElementsByTagName('h1');
-                    Array.from(h1s).forEach(h1 => h1.remove());
+                const boxes = document.getElementsByClassName('box');
+                for (let i = 0; i < boxes.length; i++) {
+                    const randomX = randomR(15, 100 - 15);
+                    const randomY = randomR(15, 100 - 15);
+                    boxes[i].style.left = `${randomX}%`;
+                    boxes[i].style.top = `${randomY}%`;
+                }
 
-                    clients.forEach(client => {
-                        const newH1 = document.createElement('h1');
-                        newH1.textContent = 'id: ' + client.id + ', ip: ' + client.ip;
-                        document.body.appendChild(newH1);
-                    });*/
-
-                    if (clients.length >= 2) {
-                        const newH1 = document.createElement('h1');
-                        newH1.textContent = 'Hello More Than Two';
-                        document.body.appendChild(newH1);
-                    }
-                    else {
-                        const h1s = document.getElementsByTagName('h1');
-                        Array.from(h1s).forEach(h1 => h1.remove());
-                    }
+                //boxes[1].innerHTML = sessionStorage.getItem('content');
+                socket.emit('pleaseContent', '');
+                socket.on('content', (content) => {
+                    boxes[1].innerHTML = content;
                 });
+
+                const button = document.getElementById('myButton');
+                button.addEventListener('click', function () {
+                    const container = document.getElementById('container');
+                    const content = container.innerHTML;
+                    console.log(content);
+                    //sessionStorage.setItem('content', content);
+                    socket.emit('content', content);
+
+                    window.location.href = 'index.html';
+                });
+
+                function randomR(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
             });
         </script>
     </head>
 
     <body>
+        <button id="myButton">クリックしてね</button>
+        <div id="container">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+        </div>
     </body>
 
 </html>
