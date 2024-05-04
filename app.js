@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     // Update & send clients
-    clients = clients.filter(client => client.ip !== clientIP);
+    clients = clients.filter(client => client.id !== socket.id);
     io.emit('clients', clients);
   });
 });
