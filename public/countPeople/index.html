@@ -3,50 +3,154 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>VIDEO HYPE : World Wide Wide</title>
+        <title>VIDEO HYPE</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png">
+
+        <style>
+            body {
+                margin: 0px;
+            }
+
+            h1 {
+                margin: 0px;
+                line-height: 72%;
+                letter-spacing: -0.12em;
+            }
+
+            div {
+                position: absolute;
+                margin: 0px;
+                border: 15px solid magenta;
+                padding: 0px;
+            }
+
+            span {
+                position: absolute;
+                margin: 0px;
+                padding: 0px;
+                left: 0px;
+                top: 0px;
+            }
+
+            button {
+                position: absolute;
+                width: 360px;
+                height: 60px;
+                font-size: 30px;
+            }
+        </style>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                let width = document.documentElement.clientWidth;
-                let height = document.documentElement.clientHeight;
-                window.addEventListener('resize', function (event) {
-                    width = document.documentElement.clientWidth;
-                    height = document.documentElement.clientHeight;
-                });
+            let clientCount = 0;
 
-                const socket = io({
-                    query: {
-                        appId: 'countPeople'
-                    }
-                });
-
-                socket.on('clients', clients => {
-                    /*const h1s = document.getElementsByTagName('h1');
-                    Array.from(h1s).forEach(h1 => h1.remove());
-
-                    clients.forEach(client => {
-                        const newH1 = document.createElement('h1');
-                        newH1.textContent = 'id: ' + client.id + ', ip: ' + client.ip;
-                        document.body.appendChild(newH1);
-                    });*/
-
-                    if (clients.length >= 2) {
-                        const newH1 = document.createElement('h1');
-                        newH1.textContent = 'Hello More Than Two';
-                        document.body.appendChild(newH1);
-                    }
-                    else {
-                        const h1s = document.getElementsByTagName('h1');
-                        Array.from(h1s).forEach(h1 => h1.remove());
-                    }
-                });
+            const socket = io({
+                query: {
+                    appId: 'countPeople'
+                }
             });
+
+            socket.on('clients', clients => {
+                clientCount = clients.length;
+            });
+
+            function loop() {
+                var width = document.documentElement.clientWidth;
+                var height = document.documentElement.clientHeight;
+
+                let date = new Date();
+                var time = date.getTime() / 1000;
+
+                var unit = Math.sqrt(height * width) / 120;
+
+                const theSpan = document.getElementsByTagName('span')[0];
+                theSpan.style.width = width;
+                theSpan.style.height = height;
+
+                const buttons = document.getElementsByTagName('button');
+                var buttonLength = buttons.length;
+                for (var i = 0; i < buttonLength; i++) {
+                    buttons[i].style.left = width / 2 - 180 + (i * 2 - 1) * 180 * 1.5 + 'px';
+                    buttons[i].style.top = height / 2 - 30 + 'px';
+                }
+
+                //Remove
+                const divs = document.getElementsByTagName('div');
+                var divsLength = divs.length;
+                for (var i = 0; i < divsLength; i++) {
+                    divs[0].remove();
+                }
+
+                var borderWidth = unit;
+                var widthB = width - 2 * borderWidth;
+                var heightB = height - 2 * borderWidth;
+
+                //Prepare
+                const xs = [];
+                const ys = [];
+                const widthes = [];
+                const heights = [];
+                xs.push(0);
+                ys.push(0);
+                widthes.push(width);
+                heights.push(height);
+                for (var i = 0; i < clientCount; i++) {
+                    var xsLength = xs.length;
+                    for (var j = 0; j < xsLength; j++) {
+                        var ratio = (Math.sin(time * (1 + (i * j) / 18) + i + j) + 1) * 0.3 + 0.2;
+                        //Horizontal
+                        if (i % 2 == 0) {
+                            xs.push(xs[j] + widthes[j] * ratio);
+                            ys.push(ys[j]);
+                            widthes.push(widthes[j] * (1 - ratio));
+                            heights.push(heights[j]);
+
+                            widthes[j] *= ratio;
+                        }
+                        //Vertical
+                        else {
+                            xs.push(xs[j]);
+                            ys.push(ys[j] + heights[j] * ratio);
+                            widthes.push(widthes[j]);
+                            heights.push(heights[j] * (1 - ratio));
+
+                            heights[j] *= ratio;
+                        }
+                    }
+                }
+
+                //Create
+                for (var i = 0; i < xs.length; i++) {
+                    const newDiv = document.createElement('div');
+                    var r = Math.floor(Math.random() * 256);
+                    var g = Math.floor(Math.random() * 256);
+                    var b = Math.floor(Math.random() * 256);
+                    //newDiv.style.borderColor = 'rgb(' + r.toString() + ', ' + g.toString() + ', ' + b.toString() + ')';
+                    newDiv.style.borderWidth = borderWidth + 'px';
+                    newDiv.style.left = xs[i] + 'px';
+                    newDiv.style.top = ys[i] + 'px';
+                    newDiv.style.width = widthes[i] - 2 * borderWidth + 'px';
+                    newDiv.style.height = heights[i] - 2 * borderWidth + 'px';
+                    theSpan.appendChild(newDiv);
+
+                    const p = document.createElement('h1');
+                    p.innerText = 'V I D E O \xa0 H Y P E';
+                    p.style.fontSize = 4 * unit + 'px';
+                    newDiv.appendChild(p);
+                }
+
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
         </script>
     </head>
 
     <body>
+        <span></span>
     </body>
 
 </html>
