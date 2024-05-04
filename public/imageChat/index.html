@@ -33,7 +33,6 @@
             .message {
                 width: 100%;
                 display: block;
-                text-align: right;
             }
 
             .image-button {
@@ -68,12 +67,8 @@
                         const imgElement = document.createElement('img');
 
                         messageContainer.classList.add('message');
-
-                        if (clientID === theMessage.clientID) {
-                            imgElement.style.textAlign = 'right';
-                        } else {
-                            imgElement.style.textAlign = 'left';
-                        }
+                        messageContainer.style.textAlign = (clientID === theMessage.clientID) ? 'right' : 'left';
+                        
                         imgElement.src = '../asset/3d/' + theMessage.imageID + '.gif';
 
                         messagesContainer.appendChild(messageContainer);
@@ -88,12 +83,8 @@
                     const imgElement = document.createElement('img');
 
                     messageContainer.classList.add('message');
+                    messageContainer.style.textAlign = (clientID === newMessage.clientID) ? 'right' : 'left';
 
-                    if (clientID === newMessage.clientID) {
-                        imgElement.style.textAlign = 'right';
-                    } else {
-                        imgElement.style.textAlign = 'left';
-                    }
                     imgElement.src = '../asset/3d/' + newMessage.imageID + '.gif';
 
                     messagesContainer.appendChild(messageContainer);
