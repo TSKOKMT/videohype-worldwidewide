@@ -25,7 +25,7 @@
             }
 
             hr {
-                height: 5px;
+                height: 20px;
                 background-color: #ff00ff;
                 border: none;
             }
@@ -89,12 +89,12 @@
             document.addEventListener('DOMContentLoaded', function () {
                 setInterval(function () { document.getElementById('title').style.color = getRandomColor(); }, 100);
 
-                setInterval(function () {
+                /*setInterval(function () {
                     const hrs = document.getElementsByTagName('hr');
                     for (let i = 0; i < hrs.length; i++) {
                         hrs[i].style.backgroundColor = getRandomColor();
                     }
-                }, 500);
+                }, 500);*/
 
                 //Auto Scroll
                 function updateScroll() {

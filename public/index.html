@@ -73,6 +73,7 @@
 
                     const p = document.createElement('p');
                     p.innerText = texts[index];
+                    p.style.color = 'white';
                     div.appendChild(p);
 
                     setInterval(function () {
@@ -80,7 +81,7 @@
                         const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
                         const hue = (seconds * 360) % 360;
                         div.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
-                    }, 100);
+                    }, 10);
                 });
             }
 
@@ -91,11 +92,11 @@
                 var frameHeight = document.documentElement.clientHeight;
 
                 const container = document.body;
-                const numOfDivs = 30;
-                const minWidth = 30;
-                const maxWidth = 600;
-                const minHeight = 30;
-                const maxHeight = 600;
+                const numOfDivs = 12;
+                const minWidth = 100;
+                const maxWidth = 1000;
+                const minHeight = 50;
+                const maxHeight = 1000;
                 const divs = [];
                 const colors = [];
 
