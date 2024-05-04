@@ -13,21 +13,25 @@
 
         <style>
             body {
-                padding: 10px;
-                background-color: white;
-                color: white;
-                font-size: 5vw;
+                margin: 0px;
+                padding: 0px;
+                color: grey;
+                font-size: 4vh;
             }
 
             img {
                 display: inline-block;
-                height: 10vw;
+                height: 16vw;
             }
 
             hr {
                 height: 5px;
                 background-color: #ff00ff;
                 border: none;
+            }
+
+            p {
+                color: white;
             }
 
             #messages {
@@ -64,14 +68,18 @@
             }
 
             #reloadButton {
-                bottom: 10px;
+                top: calc(10px + 60vh + 10px);
                 right: 10px;
             }
 
             #homeButton {
-                top: 10px;
+                top: 9vh;
                 right: 10px;
             }
+
+            /*#buttons {
+                background-color: #eee;
+            }*/
         </style>
 
         <script src="/socket.io/socket.io.js"></script>
