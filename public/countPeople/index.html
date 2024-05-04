@@ -45,7 +45,7 @@
                 position: fixed;
                 width: 18vh;
                 height: 6vh;
-                /*border-radius: 12px;*/
+                border-radius: 12px;
                 font-size: 20px;
             }
 
@@ -164,13 +164,23 @@
             function randomR(min, max) {
                 return Math.random() * (max - min) + min;
             }
+
+            function playRandomAudio() {
+                const player = document.getElementById('audioPlayer');
+                player.src = '../asset/sound/' + Math.floor(randomR(0, 15)) + '.mp3';
+                player.play();
+            }
+
+            setInterval(playRandomAudio, 1000);
         </script>
+
     </head>
 
     <body>
         <span></span>
         <h2 id="countText">1</h2>
         <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
+        <audio id="audioPlayer" controls>
     </body>
 
 </html>

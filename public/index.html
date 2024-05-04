@@ -43,7 +43,7 @@
         <script>
             setInterval(function () {
                 window.location.reload();
-            }, 4000);
+            }, 10000);
 
             function threeLink() {
                 // すべてのdiv要素を取得
@@ -220,11 +220,16 @@
                 //Send theHTML
                 const theHTML = document.documentElement.innerHTML;
                 socket.emit('theHTML', theHTML);
+
+                const player = document.getElementById('audioPlayer');
+                player.src = './asset/sound/nature/' + Math.floor(randomR(0, 11)) + '.mp3';
+                player.play();
             });
         </script>
     </head>
 
     <body>
+        <audio id="audioPlayer" controls loop></audio>
     </body>
 
 </html>
