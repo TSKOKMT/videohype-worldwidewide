@@ -111,7 +111,7 @@
                 resizeIframes();
                 resizeBoxBorderRadius();
 
-                /*const socket = io({
+                const socket = io({
                     query: {
                         appId: 'infinityRect'
                     }
@@ -124,7 +124,7 @@
 
                     resizeIframes();
                     resizeBoxBorderRadius();
-                });*/
+                });
 
                 const button = document.getElementById('myButton');
                 button.addEventListener('click', function () {
@@ -206,7 +206,8 @@
                     const theParent = boxes[i].parentNode;
                     const theRadius = Math.sqrt(theParent.clientWidth * theParent.clientHeight) / 24;
                     boxes[i].style.borderRadius = theRadius + 'px';
-                    boxes[i].style.border = (theRadius / 2) + 'px solid #ff00ff;';
+                    if (i == 0) boxes[i].style.border = (theRadius / 2) + 'px solid #ff00ff;';
+                    else boxes[i].style.border = (theRadius / 2) + 'px solid #000000;';
                 }
             }
         </script>
