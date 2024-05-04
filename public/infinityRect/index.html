@@ -29,8 +29,11 @@
             }
 
             iframe {
-                width: 100%;
-                height: 100%;
+                width: 200%;
+                height: 200%;
+                transform: scale(0.5);
+                transform-origin: 0 0;
+                border: none;
             }
 
             a {
@@ -94,15 +97,27 @@
     <body>
         <button id="myButton">クリックしてね</button>
         <div id="container">
+            <div class="box">1</div>
             <div class="box">
-                <a href="https://www.example.com"></a>
-                <iframe src="https://www.example.com" frameborder="0"></iframe>
+                <a href="https://en.wikipedia.org/wiki/Internet"></a>
+                <iframe src="https://en.wikipedia.org/wiki/Internet"></iframe>
             </div>
-            <div class="box">2</div>
-            <div class="box">3</div>
-            <div class="box">4</div>
-            <div class="box">5</div>
-            <div class="box">6</div>
+            <div class="box">
+                <a href="https://youtu.be/7UXwhIQsYXY"></a>
+                <iframe src="https://youtu.be/7UXwhIQsYXY"></iframe>
+            </div>
+            <div class="box">
+                <a href="https://www.google.com"></a>
+                <iframe src="https://www.google.com"></iframe>
+            </div>
+            <div class="box">
+                <a href="https://scrapbox.io/videohype2000/"></a>
+                <iframe src="https://scrapbox.io/videohype2000/"></iframe>
+            </div>
+            <div class="box">
+                <a href="https://toroymoi.com"></a>
+                <iframe src="https://toroymoi.com"></iframe>
+            </div>
         </div>
     </body>
 
