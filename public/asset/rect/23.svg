@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 455 492">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #84ce51;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #844351;
+      }
+
+      .cls-3 {
+        fill: #dc4351;
+      }
+
+      .cls-4 {
+        fill: #e5e2c2;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_14" data-name="レイヤー 14">
+    <g>
+      <rect class="cls-3" x="36" y="127" width="377" height="320"/>
+      <rect class="cls-3" y="198" width="53" height="198"/>
+      <rect class="cls-3" x="166" y="422" width="148" height="70"/>
+      <rect class="cls-3" x="394" y="188" width="61" height="194"/>
+      <rect class="cls-3" x="118" y="412" width="276" height="53"/>
+      <rect class="cls-3" x="82" y="108" width="264" height="60"/>
+      <rect class="cls-2" x="189" y="87" width="135" height="31"/>
+      <rect class="cls-1" x="257" width="17" height="103"/>
+      <rect class="cls-4" x="110" y="138" width="56" height="142"/>
+      <rect class="cls-4" x="69" y="209" width="41" height="135"/>
+      <rect class="cls-4" x="90" y="300" width="113" height="24"/>
+      <rect class="cls-4" x="69" y="344" width="110" height="9"/>
+      <rect class="cls-4" x="98" y="344" width="12" height="52"/>
+      <rect class="cls-4" x="69" y="376" width="110" height="6"/>
+    </g>
+  </g>
+</svg>

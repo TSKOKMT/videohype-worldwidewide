@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.53 288">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffb400;
+      }
+
+      .cls-1, .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #ff0;
+      }
+
+      .cls-3 {
+        fill: #d72d00;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_30" data-name="レイヤー 30">
+    <g>
+      <rect class="cls-3" x="25.81" y="131.77" width="145.36" height="156.23"/>
+      <rect class="cls-3" x="83.55" y="42.79" width="72" height="124.3"/>
+      <rect class="cls-3" y="222.79" width="38.72" height="65.21"/>
+      <rect class="cls-1" x="155.55" y="181.36" width="34.64" height="106.64"/>
+      <rect class="cls-1" x="38.72" y="105.28" width="38.72" height="104.6"/>
+      <rect class="cls-1" x="119.55" y="33.28" width="18.34" height="176.6"/>
+      <rect class="cls-2" x="68.6" y="188.15" width="29.89" height="92.38"/>
+      <rect class="cls-2" x="102.57" y="157.58" width="68.6" height="68.6"/>
+      <rect class="cls-2" x="57.74" y="71.32" width="25.81" height="25.81"/>
+      <rect class="cls-2" x="146.04" width="18.34" height="18.34"/>
+      <rect class="cls-2" x="164.38" y="243.85" width="44.15" height="44.15"/>
+      <rect class="cls-2" x="8.83" y="209.89" width="29.89" height="56.38"/>
+      <rect class="cls-3" x="33.96" y="167.09" width="46.87" height="88.3"/>
+      <rect class="cls-3" x="141.96" y="147.4" width="22.42" height="48.23"/>
+      <rect class="cls-3" x="112.08" y="188.15" width="16.98" height="72.68"/>
+      <rect class="cls-3" x="137.89" y="209.89" width="40.08" height="50.94"/>
+      <rect class="cls-3" x="93.06" y="238.42" width="19.02" height="36.68"/>
+      <rect class="cls-2" x="129.06" y="255.4" width="16.98" height="25.13"/>
+    </g>
+  </g>
+</svg>

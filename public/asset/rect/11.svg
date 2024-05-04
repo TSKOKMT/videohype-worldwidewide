@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 570.69 445">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ed1c24;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        stroke-width: 0px;
+      }
+
+      .cls-2 {
+        fill: #fbb03b;
+      }
+
+      .cls-3 {
+        fill: lime;
+      }
+
+      .cls-4 {
+        fill: #b84939;
+      }
+
+      .cls-5 {
+        fill: #f2c768;
+      }
+
+      .cls-6 {
+        fill: #603813;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_11" data-name="レイヤー 11">
+    <g>
+      <rect class="cls-6" x="36.69" y="250.61" width="503.55" height="114.76"/>
+      <rect class="cls-4" x="36.69" y="232.65" width="503.55" height="98.37"/>
+      <rect class="cls-5" x="9.86" y="365.37" width="556.64" height="79.63"/>
+      <rect class="cls-2" y="295.89" width="563.67" height="17.96"/>
+      <rect class="cls-1" x="54.65" y="188.15" width="466.08" height="69.48"/>
+      <rect class="cls-2" x="21.86" y="153.8" width="541.81" height="34.35"/>
+      <rect class="cls-3" x="21.86" y="120.23" width="541.81" height="42.94"/>
+      <polygon class="cls-5" points="516.82 42.94 516.82 0 68.7 0 68.7 42.94 7.03 42.94 7.03 152.24 570.69 152.24 570.69 42.94 516.82 42.94"/>
+    </g>
+  </g>
+</svg>

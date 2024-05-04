@@ -15,8 +15,8 @@
 
             .box {
                 position: absolute;
-                width: 30%;
-                height: 30%;
+                width: 24%;
+                height: 24%;
                 transform: translate(-50%, -50%);
                 background-color: transparent;
                 border: 1px solid #000000;
@@ -48,21 +48,52 @@
                 height: 100%;
                 object-fit: contain;
             }
+
+            #myButton {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 7vw;
+                height: 2vw;
+            }
+
+            #homeButton {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 7vw;
+                height: 2vw;
+            }
         </style>
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                const container = document.getElementById('container');
+                container.style.backgroundColor = getRandomColor();
+
                 const boxes = document.getElementsByClassName('box');
                 for (let i = 0; i < boxes.length; i++) {
-                    const randomX = randomR(15, 100 - 15);
-                    const randomY = randomR(15, 100 - 15);
-                    boxes[i].style.left = `${randomX}%`;
-                    boxes[i].style.top = `${randomY}%`;
+                    let bOk;
+                    let whileCount = 0;
+                    do {
+                        const randomX = randomR(12, 100 - 12);
+                        const randomY = randomR(12, 100 - 12);
+                        boxes[i].style.left = `${randomX}%`;
+                        boxes[i].style.top = `${randomY}%`;
+                        //Check
+                        bOk = true;
+                        for (let j = 0; j < i; j++) {
+                            if (isOverlapping(boxes[i], boxes[j])) {
+                                bOk = false;
+                                break;
+                            }
+                        }
+                        whileCount++;
+                    } while (whileCount < 1000 && !bOk)
                 }
 
                 const iframes = document.getElementsByTagName('iframe');
-                console.log('!!!' + iframes.length);
                 for (let i = 0; i < iframes.length; i++) {
                     let theScale = 1920 / iframes[i].clientWidth;
                     iframes[i].style.width = theScale * 100 + '%';
@@ -84,7 +115,6 @@
 
                 const button = document.getElementById('myButton');
                 button.addEventListener('click', function () {
-                    const container = document.getElementById('container');
                     const content = container.innerHTML;
                     console.log(content);
                     //sessionStorage.setItem('content', content);
@@ -107,11 +137,27 @@
             function randomR(min, max) {
                 return Math.random() * (max - min) + min;
             }
+
+            function getRandomColor() {
+                const h = Math.floor(Math.random() * 360);
+                const s = Math.floor(randomR(90, 100));
+                const l = Math.floor(randomR(50, 60));
+                return `hsl(${h},${s}%,${l}%)`;
+            }
+
+            function isOverlapping(box1, box2) {
+                const rect1 = box1.getBoundingClientRect();
+                const rect2 = box2.getBoundingClientRect();
+
+                return !(rect1.right < rect2.left ||
+                    rect1.left > rect2.right ||
+                    rect1.bottom < rect2.top ||
+                    rect1.top > rect2.bottom);
+            }
         </script>
     </head>
 
     <body>
-        <button id="myButton">クリックしてね</button>
         <div id="container">
             <div class="box">1</div>
             <div class="box">
@@ -135,6 +181,8 @@
                 <iframe src="https://toroymoi.com"></iframe>
             </div>
         </div>
+        <button id="myButton">クリックしてね</button>
+        <button id="homeButton" href="../index.html">HOME</button>
     </body>
 
 </html>
