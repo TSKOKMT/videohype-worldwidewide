@@ -39,9 +39,9 @@ io.on('connection', (socket) => {
     });*/
 
     socket.on('newMessage', (newMessage) => {
-      const newMessage = { imageSrc: newMessage.imageSrc, timeString: newMessage.timeString, clientID: clientIP };
-      messages.push(newMessage);
-      io.emit('newMessage', newMessage);
+      const newNewMessage = { imageSrc: newMessage.imageSrc, timeString: newMessage.timeString, clientID: clientIP };
+      messages.push(newNewMessage);
+      io.emit('newMessage', newNewMessage);
     });
   }
 
