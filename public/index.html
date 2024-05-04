@@ -41,6 +41,40 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
+            function threeLink() {
+                // すべてのdiv要素を取得
+                const divs = document.querySelectorAll('div');
+                const divsArray = Array.from(divs);
+
+                // div要素が3つ未満の場合は何もしない
+                if (divsArray.length < 3) {
+                    return;
+                }
+
+                // ランダムに3つのdivを選択
+                const selectedDivs = [];
+                for (let i = 0; i < 3; i++) {
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * divsArray.length);
+                    } while (selectedDivs.includes(divsArray[randomIndex]));
+                    selectedDivs.push(divsArray[randomIndex]);
+                }
+
+                // 各選択されたdivに異なるリンクを持つaタグを追加
+                const links = ['./infinityRect/index.html', './imageChat/index.html', './countPeople/index.html'];
+                const texts = ['I N F I N I T Y \xa0 R E C T', 'I M A G E \xa0 C H A T', 'C O U N T \xa0 P E O P L E'];
+                selectedDivs.forEach((div, index) => {
+                    const a = document.createElement('a');
+                    a.href = links[index];
+                    div.appendChild(a);
+
+                    const p = document.createElement('p');
+                    p.innerText = texts[index];
+                    div.appendChild(p);
+                });
+            }
+
             document.addEventListener('DOMContentLoaded', function () {
                 const socket = io();
 
@@ -141,7 +175,7 @@
                         newDivP = { top, left, width, height };
 
                         loopCount++;
-                    } while (loopCount < maxLoopCount && divs.length > 0 && isOverlapping(newDivP, divs) && isInside(newDivP, containerDiv));
+                    } while (loopCount < maxLoopCount && divs.length > 0 && (isOverlapping(newDivP, divs) || !isInside(newDivP, containerDiv)));
 
                     //Create newDiv
                     const newDiv = document.createElement('div');
@@ -159,12 +193,14 @@
                     newDiv.appendChild(newP);
 
                     //Create a
-                    var a = document.createElement("a");
+                    /*var a = document.createElement("a");
                     a.href = "https://www.example.com";
-                    newDiv.appendChild(a);
+                    newDiv.appendChild(a);*/
 
                     //Push
                     divs.push(newDivP);
+
+                    threeLink();
                 }
 
                 //Send theHTML
