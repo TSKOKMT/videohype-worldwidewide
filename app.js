@@ -53,8 +53,8 @@ io.on('connection', (socket) => {
 
     socket.on('content', (content) => {
       contents.push(content);
-      // サイズが3を超えた場合、最古の要素を削除
-      while (contents.length > 3) {
+      // サイズが100を超えた場合、最古の要素を削除
+      while (contents.length > 100) {
         contents.shift(); // 配列の最初の要素を削除
       }
     });

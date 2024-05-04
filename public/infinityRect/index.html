@@ -110,6 +110,7 @@
 
                 resizeIframes();
                 resizeBoxBorderRadius();
+                trimNestedDivs();
 
                 const socket = io({
                     query: {
@@ -124,6 +125,7 @@
 
                     resizeIframes();
                     resizeBoxBorderRadius();
+                    trimNestedDivs();
                 });
 
                 const button = document.getElementById('myButton');
@@ -209,6 +211,32 @@
                     if (i == 0) boxes[i].style.border = (theRadius / 2) + 'px solid #ff00ff;';
                     else boxes[i].style.border = (theRadius / 2) + 'px solid #000000;';
                 }
+            }
+
+            const maxDepth = 4;
+
+            // 深さを計算する関数
+            function getDepth(element, currentDepth = 0) {
+                // 再帰的に親要素をたどり、根元のdivまでの深さを計算
+                if (element.tagName === 'DIV' && element.parentNode) {
+                    return getDepth(element.parentNode, currentDepth + 1);
+                }
+                return currentDepth;
+            }
+
+            // 指定した深さ以上のdivを削除する関数
+            function trimNestedDivs() {
+                // ページ内の全div要素を取得
+                const allDivs = document.querySelectorAll('div');
+                // 各divについて処理
+                allDivs.forEach(div => {
+                    // divの深さを取得
+                    const depth = getDepth(div);
+                    // 深さが許容値を超えていれば削除
+                    if (depth > maxDepth) {
+                        div.parentNode.removeChild(div);
+                    }
+                });
             }
         </script>
     </head>
