@@ -6,22 +6,28 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>VIDEO HYPE : World Wide Wide</title>
 
-        <link href="index.css" rel="stylesheet">
-        <link href="dmt7ild.css" rel="stylesheet">
-        <link href="flickity.css" rel="stylesheet">
-        <link href="www-player.css" rel="stylesheet">
+        <link href="../asset/css/gen0.css" rel="stylesheet">
+        <link href="../asset/css/gen1.css" rel="stylesheet">
+        <link href="../asset/css/gen2.css" rel="stylesheet">
+        <link href="../asset/css/gen3.css" rel="stylesheet">
 
         <style>
             body {
                 padding: 10px;
                 background-color: white;
-                color: magenta;
-                font-size: 24px;
+                color: white;
+                font-size: 30px;
             }
 
             img {
                 display: inline-block;
-                height: 100px;
+                height: 120px;
+            }
+
+            hr {
+                height: 5px;
+                background-color: #ff00ff;
+                border: none;
             }
 
             #messages {
@@ -37,7 +43,25 @@
 
             .image-button {
                 cursor: pointer;
-                margin: 5px;
+                margin: 20px;
+            }
+
+            button {
+                position: absolute;
+                width: 18vh;
+                height: 6vh;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            #reloadButton {
+                top: calc(10px + 6vh + 10px);
+                right: 10px;
+            }
+
+            #homeButton {
+                top: 10px;
+                right: 10px;
             }
         </style>
 
@@ -46,6 +70,20 @@
             let socket;
 
             document.addEventListener('DOMContentLoaded', function () {
+                setInterval(function () { document.getElementById('title').style.color = getRandomColor(); }, 100);
+
+                setInterval(function () {
+                    const hrs = document.getElementsByTagName('hr');
+                    for (let i = 0; i < hrs.length; i++) {
+                        hrs[i].style.backgroundColor = getRandomColor();
+                    }
+                }, 500);
+
+                const imgButtons = document.getElementsByClassName('image-button');
+                for (let i = 0; i < imgButtons.length; i++) {
+                    imgButtons[i].src = randomImageName();
+                }
+
                 socket = io({
                     query: {
                         appId: 'imageChat'
@@ -68,7 +106,7 @@
 
                         messageContainer.classList.add('message');
                         messageContainer.style.textAlign = (clientID === theMessage.clientID) ? 'right' : 'left';
-                        
+
                         imgElement.src = '../asset/3d/' + theMessage.imageID + '.gif';
 
                         messagesContainer.appendChild(messageContainer);
@@ -85,7 +123,7 @@
                     messageContainer.classList.add('message');
                     messageContainer.style.textAlign = (clientID === newMessage.clientID) ? 'right' : 'left';
 
-                    imgElement.src = '../asset/3d/' + newMessage.imageID + '.gif';
+                    imgElement.src = newMessage.imageSrc;
 
                     messagesContainer.appendChild(messageContainer);
                     messageContainer.appendChild(hrElement);
@@ -113,22 +151,47 @@
                 });*/
             });
 
-            function sendImage(imageID) {
-                console.log(imageID);
-                socket.emit('imageID', imageID);
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function getRandomColor() {
+                const h = Math.floor(Math.random() * 360);
+                /*const s = Math.floor(randomR(90, 100));
+                const l = Math.floor(randomR(50, 60));*/
+                const s = Math.floor(randomR(60, 100));
+                const l = Math.floor(randomR(50, 90));
+                return `hsl(${h},${s}%,${l}%)`;
+            }
+
+            function sendImage(imageSrc) {
+                console.log(imageSrc);
+                socket.emit('imageSrc', imageSrc);
+            }
+
+            function randomImageName() {
+                let imageName;
+                let imageType = Math.floor(randomR(0, 3));
+                if (imageType == 0) imageName = '../asset/3d/' + Math.floor(randomR(0, 33)) + '.gif';
+                else if (imageType == 1) imageName = '../asset/rect/' + Math.floor(randomR(0, 28)) + '.svg';
+                else imageName = '../asset/anime/' + Math.floor(randomR(0, 9)) + '.gif';
+                return imageName;
             }
         </script>
     </head>
 
     <body>
-        <h1>VIDEO HYPE CHAT !</h1>
+        <h1 id="title">VIDEO HYPE CHAT !</h1>
         <div id="messages">
         </div>
         <!-- <input type="text" id="messageInput" placeholder="Enter Message">
         <button id="sendButton">Send</button> -->
-        <img src="../asset/3d/0.gif" class="image-button" onclick="sendImage(0)">
-        <img src="../asset/3d/1.gif" class="image-button" onclick="sendImage(1)">
-        <img src="../asset/3d/2.gif" class="image-button" onclick="sendImage(2)">
+        <img class="image-button" onclick="sendImage(this.src)">
+        <img class="image-button" onclick="sendImage(this.src)">
+        <img class="image-button" onclick="sendImage(this.src)">
+
+        <button id="reloadButton" onclick="location.href='./index.html';">RELOAD</button>
+        <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
     </body>
 
 </html>
