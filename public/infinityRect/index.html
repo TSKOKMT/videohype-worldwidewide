@@ -93,13 +93,7 @@
                     } while (whileCount < 1000 && !bOk)
                 }
 
-                const iframes = document.getElementsByTagName('iframe');
-                for (let i = 0; i < iframes.length; i++) {
-                    let theScale = 1920 / iframes[i].clientWidth;
-                    iframes[i].style.width = theScale * 100 + '%';
-                    iframes[i].style.height = theScale * 100 + '%';
-                    iframes[i].style.transform = 'scale(' + (1 / theScale) + ')';
-                }
+                resizeIframes();
 
                 const socket = io({
                     query: {
@@ -110,12 +104,14 @@
                 //boxes[1].innerHTML = sessionStorage.getItem('content');
                 socket.emit('pleaseContent', '');
                 socket.on('content', (content) => {
-                    boxes[0].innerHTML = content;
+                    boxes[0].outerHTML = content;
+
+                    resizeIframes();
                 });
 
                 const button = document.getElementById('myButton');
                 button.addEventListener('click', function () {
-                    const content = container.innerHTML;
+                    const content = container.outerHTML;
                     console.log(content);
                     //sessionStorage.setItem('content', content);
                     socket.emit('content', content);
@@ -153,6 +149,16 @@
                     rect1.left > rect2.right ||
                     rect1.bottom < rect2.top ||
                     rect1.top > rect2.bottom);
+            }
+
+            function resizeIframes() {
+                const iframes = document.getElementsByTagName('iframe');
+                for (let i = 0; i < iframes.length; i++) {
+                    let theScale = 1920 / iframes[i].clientWidth;
+                    iframes[i].style.width = theScale * 100 + '%';
+                    iframes[i].style.height = theScale * 100 + '%';
+                    iframes[i].style.transform = 'scale(' + (1 / theScale) + ')';
+                }
             }
         </script>
     </head>
