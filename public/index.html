@@ -65,6 +65,8 @@
                 const links = ['./infinityRect/index.html', './imageChat/index.html', './countPeople/index.html'];
                 const texts = ['I N F I N I T Y \xa0 R E C T', 'I M A G E \xa0 C H A T', 'C O U N T \xa0 P E O P L E'];
                 selectedDivs.forEach((div, index) => {
+                    div.innerHTML = '';
+
                     const a = document.createElement('a');
                     a.href = links[index];
                     div.appendChild(a);
@@ -72,6 +74,13 @@
                     const p = document.createElement('p');
                     p.innerText = texts[index];
                     div.appendChild(p);
+
+                    setInterval(function () {
+                        const now = new Date();
+                        const seconds = now.getSeconds() + now.getMilliseconds() / 1000;
+                        const hue = (seconds * 360) % 360;
+                        div.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+                    }, 100);
                 });
             }
 
