@@ -36,6 +36,7 @@
             }
 
             #container {
+                position: absolute;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -119,7 +120,7 @@
                         messageContainer.classList.add('message');
                         messageContainer.style.textAlign = (clientID === theMessage.clientID) ? 'right' : 'left';
 
-                        imgElement.src = '../asset/3d/' + theMessage.imageID + '.gif';
+                        imgElement.src = theMessage.imageSrc;
 
                         messagesContainer.appendChild(messageContainer);
                         messageContainer.appendChild(hrElement);
@@ -165,6 +166,15 @@
                     socket.emit('newMessage', text);
                     document.getElementById('messageInput').value = '';
                 });*/
+
+                function loop() {
+                    const containerElement = document.getElementById('container');
+                    containerElement.style.width = window.innerWidth;
+                    containerElement.style.height = window.innerHeight;
+
+                    requestAnimationFrame(loop);
+                }
+                requestAnimationFrame(loop);
             });
 
             function randomR(min, max) {
