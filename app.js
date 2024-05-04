@@ -48,11 +48,15 @@ io.on('connection', (socket) => {
   //INFINITY RECT
   else if (appId === 'infinityRect') {
     socket.on('pleaseContent', () => {
-      if (contents) io.emit('content', contents[contents.length - 1]);
+      if (contents.length > 0) io.emit('content', contents[contents.length - 1]);
     });
 
     socket.on('content', (content) => {
       contents.push(content);
+      // サイズが3を超えた場合、最古の要素を削除
+      while (contents.length > 3) {
+        contents.shift(); // 配列の最初の要素を削除
+      }
     });
   }
 

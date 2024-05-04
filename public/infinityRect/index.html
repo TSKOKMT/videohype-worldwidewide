@@ -11,15 +11,19 @@
             html {
                 margin: 0;
                 padding: 0;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 20px;
             }
 
             .box {
                 position: absolute;
                 width: 24%;
                 height: 24%;
-                transform: translate(-50%, -50%);
+                /*transform: translate(-50%, -50%);*/
                 background-color: transparent;
-                border: 1px solid #000000;
+                border: 4px solid #ff00ff;
+                border-radius: 10%;
+                overflow: hidden;
             }
 
             #container {
@@ -49,28 +53,27 @@
                 object-fit: contain;
             }
 
-            #myButton {
+            button {
                 position: absolute;
-                top: 10px;
-                left: 10px;
                 width: 18vh;
                 height: 6vh;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            #myButton {
+                top: 10px;
+                left: 10px;
             }
 
             #reloadButton {
-                position: absolute;
                 top: 10px;
                 left: calc(10px + 18vh + 10px);
-                width: 18vh;
-                height: 6vh;
             }
 
             #homeButton {
-                position: absolute;
                 top: 10px;
                 right: 10px;
-                width: 18vh;
-                height: 6vh;
             }
         </style>
 
@@ -85,8 +88,12 @@
                     let bOk;
                     let whileCount = 0;
                     do {
-                        const randomX = randomR(12, 100 - 12);
-                        const randomY = randomR(12, 100 - 12);
+                        const randomW = randomR(20, 40);
+                        const randomH = randomR(20, 40);
+                        const randomX = randomR(0, 100 - randomW);
+                        const randomY = randomR(0, 100 - randomH);
+                        boxes[i].style.width = `${randomW}%`;
+                        boxes[i].style.height = `${randomH}%`;
                         boxes[i].style.left = `${randomX}%`;
                         boxes[i].style.top = `${randomY}%`;
                         //Check
@@ -102,8 +109,9 @@
                 }
 
                 resizeIframes();
+                resizeBoxBorderRadius();
 
-                const socket = io({
+                /*const socket = io({
                     query: {
                         appId: 'infinityRect'
                     }
@@ -115,7 +123,8 @@
                     boxes[0].innerHTML = content;
 
                     resizeIframes();
-                });
+                    resizeBoxBorderRadius();
+                });*/
 
                 const button = document.getElementById('myButton');
                 button.addEventListener('click', function () {
@@ -146,7 +155,7 @@
                 const h = Math.floor(Math.random() * 360);
                 /*const s = Math.floor(randomR(90, 100));
                 const l = Math.floor(randomR(50, 60));*/
-                const s = Math.floor(randomR(90, 100));
+                const s = Math.floor(randomR(60, 100));
                 const l = Math.floor(randomR(50, 90));
                 return `hsl(${h},${s}%,${l}%)`;
             }
@@ -171,8 +180,6 @@
                 element.style.backgroundImage = gradient;
             }
 
-
-
             function isOverlapping(box1, box2) {
                 const rect1 = box1.getBoundingClientRect();
                 const rect2 = box2.getBoundingClientRect();
@@ -192,6 +199,16 @@
                     iframes[i].style.transform = 'scale(' + (1 / theScale) + ')';
                 }
             }
+
+            function resizeBoxBorderRadius() {
+                const boxes = document.getElementsByClassName('box');
+                for (let i = 0; i < boxes.length; i++) {
+                    const theParent = boxes[i].parentNode;
+                    const theRadius = Math.sqrt(theParent.clientWidth * theParent.clientHeight) / 24;
+                    boxes[i].style.borderRadius = theRadius + 'px';
+                    boxes[i].style.border = (theRadius / 2) + 'px solid #ff00ff;';
+                }
+            }
         </script>
     </head>
 
@@ -205,10 +222,6 @@
             <div class="box">
                 <a href="https://youtu.be/7UXwhIQsYXY"></a>
                 <img src="../asset/3d/12.gif">
-            </div>
-            <div class="box">
-                <a href="https://www.google.com"></a>
-                <img src="../asset/rect/0.svg">
             </div>
             <div class="box">
                 <a href="https://scrapbox.io/videohype2000/"></a>
