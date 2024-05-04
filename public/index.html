@@ -19,14 +19,24 @@
                 const socket = io();
 
                 socket.on('clients', clients => {
-                    const h1s = document.getElementsByTagName('h1');
+                    /*const h1s = document.getElementsByTagName('h1');
                     Array.from(h1s).forEach(h1 => h1.remove());
 
                     clients.forEach(client => {
                         const newH1 = document.createElement('h1');
                         newH1.textContent = 'id: ' + client.id + ', ip: ' + client.ip;
                         document.body.appendChild(newH1);
-                    });
+                    });*/
+
+                    if (clients.length >= 2) {
+                        const newH1 = document.createElement('h1');
+                        newH1.textContent = 'Hello More Than Two';
+                        document.body.appendChild(newH1);
+                    }
+                    else {
+                        const h1s = document.getElementsByTagName('h1');
+                        Array.from(h1s).forEach(h1 => h1.remove());
+                    }
                 });
             });
         </script>
