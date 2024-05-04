@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Page 1</title>
+    </head>
+
+    <body>
+        <h1>This is Page 1</h1>
+        <p>Welcome to Page 1. This page has some additional content for visual enhancement.</p>
+        <div>
+            <h2>Features:</h2>
+            <ul>
+                <li>Interactive buttons</li>
+                <li>Stylish headings</li>
+                <li>Informative paragraphs</li>
+            </ul>
+        </div>
+        <button onclick="saveAndNavigate()">Save and Go to Page 2</button>
+
+        <script>
+            function saveAndNavigate() {
+                const htmlContent = document.documentElement.innerHTML;
+                sessionStorage.setItem('pageHTML', htmlContent);
+
+                // Go to next page
+                const thePathname = document.location.pathname;
+                const theFilename = thePathname.substring(thePathname.lastIndexOf('/') + 1);
+                if (theFilename == 'page1.html') window.location.href = 'page2.html';
+                else window.location.href = 'page1.html';
+            }
+        </script>
+    </body>
+
+</html>
