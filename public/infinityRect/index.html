@@ -40,11 +40,7 @@
                     boxes[i].style.top = `${randomY}%`;
                 }
 
-                const socket = io({
-                    query: {
-                        appId: 'infinityRect'
-                    }
-                });
+                const socket = io();
 
                 //boxes[1].innerHTML = sessionStorage.getItem('content');
                 socket.emit('pleaseContent', '');
