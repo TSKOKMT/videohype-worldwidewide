@@ -8,6 +8,10 @@ const io = socketIo(server);
 
 app.use(express.static('public'));
 
+//imageChat
+let messages = [];
+
+//infinityRect
 let contents = [];
 
 // Connection
@@ -16,14 +20,25 @@ io.on('connection', (socket) => {
 
   console.log(`Connection from app: ${appId}`);
 
-  if (appId === 'imageChat') {
+  const clientIP = socket.handshake.headers["cf-connecting-ip"];
 
+  if (appId === 'imageChat') {
+    socket.emit('hello', { messages, clientIP });
+
+    //Receave & broadcast
+    socket.on('newMessage', (text) => {
+      const newMessage = { text, clientId: clientIP };
+      messages.push(newMessage);
+      console.log('Saved Message: ', newMessage);
+
+      io.emit('newMessage', newMessage);
+    });
   }
   else if (appId === 'infinityRect') {
     socket.on('pleaseContent', () => {
       if (contents) io.emit('content', contents[contents.length - 1]);
     });
-  
+
     socket.on('content', (content) => {
       contents.push(content);
     });

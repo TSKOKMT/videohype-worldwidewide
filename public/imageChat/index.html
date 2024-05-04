@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VIDEO HYPE : World Wide Wide</title>
+
+        <link href="index.css" rel="stylesheet">
+        <link href="dmt7ild.css" rel="stylesheet">
+        <link href="flickity.css" rel="stylesheet">
+        <link href="www-player.css" rel="stylesheet">
+
+        <style>
+            body {
+                padding: 10px;
+                background-color: white;
+                color: magenta;
+                font-size: 24px;
+            }
+        </style>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const socket = io({
+                    query: {
+                        appId: 'imageChat'
+                    }
+                });
+
+                const messagesContainer = document.getElementById('messages');
+
+                let clientId;
+
+                socket.on('hello', function (data) {
+                    clientId = data.clientIP;
+
+                    for (let i = 0; i < data.messages.length; i++) {
+                        const theMessage = data.messages[i];
+
+                        const hrElement = document.createElement('hr');
+                        const messageElement = document.createElement('div');
+
+                        if (clientId === theMessage.clientId) {
+                            messageElement.style.textAlign = 'right';
+                        } else {
+                            messageElement.style.textAlign = 'left';
+                        }
+                        messageElement.textContent = theMessage.text + ' (' + theMessage.clientId + ')';
+                        messagesContainer.appendChild(hrElement);
+                        messagesContainer.appendChild(messageElement);
+                    }
+                });
+
+                socket.on('newMessage', function (newMessage) {
+                    const hrElement = document.createElement('hr');
+                    const messageElement = document.createElement('div');
+
+                    if (clientId === newMessage.clientId) {
+                        messageElement.style.textAlign = 'right';
+                    } else {
+                        messageElement.style.textAlign = 'left';
+                    }
+                    messageElement.textContent = newMessage.text + ' (' + newMessage.clientId + ')';
+                    messagesContainer.appendChild(hrElement);
+                    messagesContainer.appendChild(messageElement);
+                });
+
+                document.getElementById('sendButton').addEventListener('click', function () {
+                    const text = document.getElementById('messageInput').value;
+                    socket.emit('newMessage', text);
+                    document.getElementById('messageInput').value = '';
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>VIDEO HYPE CHAT !</h1>
+        <div id="messages" style="height: 550px; overflow-y: scroll;"></div>
+        <input type="text" id="messageInput" placeholder="Enter Message">
+        <button id="sendButton">Send</button>
+    </body>
+
+</html>
