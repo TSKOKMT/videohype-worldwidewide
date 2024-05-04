@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Grid Layout</title>
+
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+            }
+
+            .box {
+                position: absolute;
+                width: 30%;
+                height: 30%;
+                transform: translate(-50%, -50%);
+                background-color: transparent;
+                border: 1px solid #000000;
+            }
+
+            #container {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const boxes = document.getElementsByClassName('box');
+                for (let i = 0; i < boxes.length; i++) {
+                    const randomX = randomR(15, 100 - 15);
+                    const randomY = randomR(15, 100 - 15);
+                    boxes[i].style.left = `${randomX}%`;
+                    boxes[i].style.top = `${randomY}%`;
+                }
+
+                const socket = io('http://videohype.us', {
+                    query: {
+                        appId: 'infinityRect'
+                    }
+                });
+
+                //boxes[1].innerHTML = sessionStorage.getItem('content');
+                socket.emit('pleaseContent', '');
+                socket.on('content', (content) => {
+                    boxes[0].innerHTML = content;
+                });
+
+                const button = document.getElementById('myButton');
+                button.addEventListener('click', function () {
+                    const container = document.getElementById('container');
+                    const content = container.innerHTML;
+                    console.log(content);
+                    //sessionStorage.setItem('content', content);
+                    socket.emit('content', content);
+
+                    window.location.href = 'index.html';
+                });
+            });
+
+            function loop() {
+                const boxes = document.getElementsByClassName('box');
+                for (let i = 0; i < boxes.length; i++) {
+                    boxes[i].style.fontSize = boxes[i].clientHeight / 12 + 'px';
+                }
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+        </script>
+    </head>
+
+    <body>
+        <button id="myButton">クリックしてね</button>
+        <div id="container">
+            <div class="box">1</div>
+            <div class="box">2</div>
+            <div class="box">3</div>
+            <div class="box">4</div>
+            <div class="box">5</div>
+            <div class="box">6</div>
+        </div>
+    </body>
+
+</html>

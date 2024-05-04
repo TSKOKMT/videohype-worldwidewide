@@ -12,16 +12,22 @@ let contents = [];
 
 // Connection
 io.on('connection', (socket) => {
-  console.log('A client connected');
+  const appId = socket.handshake.query.appId;
 
-  socket.on('pleaseContent', () => {
-    if (contents) io.emit('content', contents[contents.length - 1]);
-  });
+  console.log(`Connection from app: ${appId}`);
 
-  socket.on('content', (content) => {
-    contents.push(content);
-    //io.emit('content', content);
-  });
+  if (appId === 'imageChat') {
+
+  }
+  else if (appId === 'infinityRect') {
+    socket.on('pleaseContent', () => {
+      if (contents) io.emit('content', contents[contents.length - 1]);
+    });
+  
+    socket.on('content', (content) => {
+      contents.push(content);
+    });
+  }
 
   socket.on('disconnect', () => {
   });
