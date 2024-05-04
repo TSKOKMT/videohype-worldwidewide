@@ -45,7 +45,7 @@
                 //boxes[1].innerHTML = sessionStorage.getItem('content');
                 socket.emit('pleaseContent', '');
                 socket.on('content', (content) => {
-                    boxes[1].innerHTML = content;
+                    boxes[0].innerHTML = content;
                 });
 
                 const button = document.getElementById('myButton');
@@ -59,6 +59,15 @@
                     window.location.href = 'index.html';
                 });
             });
+
+            function loop() {
+                const boxes = document.getElementsByClassName('box');
+                for (let i = 0; i < boxes.length; i++) {
+                    boxes[i].style.fontSize = boxes[i].clientHeight / 100 + 'px';
+                }
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
 
             function randomR(min, max) {
                 return Math.random() * (max - min) + min;
