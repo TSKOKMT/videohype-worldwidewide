@@ -15,7 +15,7 @@ io.on('connection', (socket) => {
   console.log('A client connected');
 
   socket.on('pleaseContent', () => {
-    io.emit('content', contents[contents.length - 1]);
+    if (contents) io.emit('content', contents[contents.length - 1]);
   });
 
   socket.on('content', (content) => {

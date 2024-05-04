@@ -31,13 +31,7 @@
 
         <script src="/socket.io/socket.io.js"></script>
         <script>
-            function randomR(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
             document.addEventListener("DOMContentLoaded", function () {
-                const socket = io();
-
                 const boxes = document.getElementsByClassName('box');
                 for (let i = 0; i < boxes.length; i++) {
                     const randomX = randomR(15, 100 - 15);
@@ -45,6 +39,8 @@
                     boxes[i].style.left = `${randomX}%`;
                     boxes[i].style.top = `${randomY}%`;
                 }
+
+                const socket = io();
 
                 //boxes[1].innerHTML = sessionStorage.getItem('content');
                 socket.emit('pleaseContent', '');
@@ -63,6 +59,10 @@
                     window.location.href = 'index.html';
                 });
             });
+
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
         </script>
     </head>
 
