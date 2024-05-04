@@ -16,12 +16,12 @@
                 padding: 10px;
                 background-color: white;
                 color: white;
-                font-size: 30px;
+                font-size: 5vw;
             }
 
             img {
                 display: inline-block;
-                height: 120px;
+                height: 10vw;
             }
 
             hr {
@@ -31,9 +31,15 @@
             }
 
             #messages {
-                display: block;
-                height: 550px;
-                overflow-y: scroll;
+                flex-grow: 1;
+                overflow: auto;
+            }
+
+            #container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100vh;
             }
 
             .message {
@@ -55,7 +61,7 @@
             }
 
             #reloadButton {
-                top: calc(10px + 6vh + 10px);
+                bottom: 10px;
                 right: 10px;
             }
 
@@ -78,6 +84,12 @@
                         hrs[i].style.backgroundColor = getRandomColor();
                     }
                 }, 500);
+
+                //Auto Scroll
+                function updateScroll() {
+                    const messagesElement = document.getElementById("messages");
+                    messagesElement.scrollTop = messagesElement.scrollHeight;
+                }
 
                 const imgButtons = document.getElementsByClassName('image-button');
                 for (let i = 0; i < imgButtons.length; i++) {
@@ -112,6 +124,8 @@
                         messagesContainer.appendChild(messageContainer);
                         messageContainer.appendChild(hrElement);
                         messageContainer.appendChild(imgElement);
+
+                        updateScroll();
                     }
                 });
 
@@ -128,6 +142,8 @@
                     messagesContainer.appendChild(messageContainer);
                     messageContainer.appendChild(hrElement);
                     messageContainer.appendChild(imgElement);
+
+                    updateScroll();
                 });
 
                 /*socket.on('newMessage', function (newMessage) {
@@ -181,16 +197,17 @@
     </head>
 
     <body>
-        <h1 id="title">VIDEO HYPE CHAT !</h1>
-        <div id="messages">
+        <div id="container">
+            <h1 id="title">VIDEO HYPE CHAT !</h1>
+            <div id="messages"></div>
+            <div id="buttons">
+                <img class="image-button" onclick="sendImage(this.src)">
+                <img class="image-button" onclick="sendImage(this.src)">
+                <img class="image-button" onclick="sendImage(this.src)">
+            </div>
         </div>
-        <!-- <input type="text" id="messageInput" placeholder="Enter Message">
-        <button id="sendButton">Send</button> -->
-        <img class="image-button" onclick="sendImage(this.src)">
-        <img class="image-button" onclick="sendImage(this.src)">
-        <img class="image-button" onclick="sendImage(this.src)">
 
-        <button id="reloadButton" onclick="location.href='./index.html';">RELOAD</button>
+        <button id="reloadButton" onclick="location.href='./index.html';">CHANGE</button>
         <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
     </body>
 
