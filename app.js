@@ -14,6 +14,9 @@ let messages = [];
 //infinityRect
 let contents = [];
 
+//countPeople
+let clients = [];
+
 // Connection
 io.on('connection', (socket) => {
   const appId = socket.handshake.query.appId;
@@ -41,6 +44,17 @@ io.on('connection', (socket) => {
 
     socket.on('content', (content) => {
       contents.push(content);
+    });
+  }
+  else if (appId === 'countPeople') {
+    // Update & send clients
+    clients.push({ id: socket.id, ip: clientIP });
+    io.emit('clients', clients);
+
+    socket.on('disconnect', () => {
+      // Update & send clients
+      clients = clients.filter(client => client.id !== socket.id);
+      io.emit('clients', clients);
     });
   }
 

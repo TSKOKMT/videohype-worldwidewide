@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>VIDEO HYPE : World Wide Wide</title>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let width = document.documentElement.clientWidth;
+                let height = document.documentElement.clientHeight;
+                window.addEventListener('resize', function (event) {
+                    width = document.documentElement.clientWidth;
+                    height = document.documentElement.clientHeight;
+                });
+
+                const socket = io({
+                    query: {
+                        appId: 'countPeople'
+                    }
+                });
+
+                socket.on('clients', clients => {
+                    /*const h1s = document.getElementsByTagName('h1');
+                    Array.from(h1s).forEach(h1 => h1.remove());
+
+                    clients.forEach(client => {
+                        const newH1 = document.createElement('h1');
+                        newH1.textContent = 'id: ' + client.id + ', ip: ' + client.ip;
+                        document.body.appendChild(newH1);
+                    });*/
+
+                    if (clients.length >= 2) {
+                        const newH1 = document.createElement('h1');
+                        newH1.textContent = 'Hello More Than Two';
+                        document.body.appendChild(newH1);
+                    }
+                    else {
+                        const h1s = document.getElementsByTagName('h1');
+                        Array.from(h1s).forEach(h1 => h1.remove());
+                    }
+                });
+            });
+        </script>
+    </head>
+
+    <body>
+    </body>
+
+</html>
