@@ -252,8 +252,8 @@
                     const parentStyle = window.getComputedStyle(boxes[i].parentElement);
                     const theRadius = Math.sqrt(parseFloat(parentStyle.width) * parseFloat(parentStyle.height)) / 24;
                     boxes[i].style.borderRadius = theRadius + 'px';
-                    if (i == 0) boxes[i].style.border = `${theRadius / 12}px solid #ff00ff`;
-                    else boxes[i].style.border = `${theRadius / 12}px solid black`;
+                    if (i == 0) boxes[i].style.border = `${theRadius / 6}px solid #ff00ff`;
+                    else boxes[i].style.border = `${theRadius / 6}px solid black`;
                 }
             }
 
