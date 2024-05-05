@@ -70,8 +70,8 @@
             }
 
             #reloadButton {
-                top: 10px;
-                left: calc(10px + 18vh + 10px);
+                bottom: 10px;
+                left: 10px;
             }
 
             #homeButton {
@@ -251,7 +251,7 @@
                 for (let i = 0; i < boxes.length; i++) {
                     const parentStyle = window.getComputedStyle(boxes[i].parentElement);
                     const theRadius = Math.sqrt(parseFloat(parentStyle.width) * parseFloat(parentStyle.height)) / 24;
-                    //boxes[i].style.borderRadius = theRadius + 'px';
+                    boxes[i].style.borderRadius = theRadius + 'px';
                     if (i == 0) boxes[i].style.border = `${theRadius / 12}px solid #ff00ff`;
                     else boxes[i].style.border = `${theRadius / 12}px solid black`;
                 }
@@ -286,7 +286,7 @@
     </head>
 
     <body>
-        <audio src="../asset/music/01.mp3" controls loop></audio>
+        <audio src="../asset/music/01.mp3" loop></audio>
 
         <div id="container">
             <div class="box"></div>
@@ -306,8 +306,8 @@
                 <div class="overlay"></div>
             </div>
         </div>
-        <button id="myButton">GO NEXT</button>
-        <button id="reloadButton" onclick="location.href='./index.html';">RE DESIGN</button>
+        <button id="myButton">MAKE NEW</button>
+        <button id="reloadButton" onclick="location.href='./index.html';">REDESIGN</button>
         <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
     </body>
 
