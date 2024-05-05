@@ -90,6 +90,8 @@
             }
 
             document.addEventListener('DOMContentLoaded', function () {
+                if (Math.floor(randomR(0, 10)) == 0) document.location = './random.html';
+
                 const socket = io();
 
                 var frameWidth = document.documentElement.clientWidth;

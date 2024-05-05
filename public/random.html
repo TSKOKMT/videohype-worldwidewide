@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title>VIDEO HYPE : World Wide Wide</title>
+        <link rel="icon" type="image/x-icon" href="favicon.png">
+
+        <style>
+            body {
+                margin: 0px;
+
+                background-image: url('./asset/Logo.jpg');
+
+                background-size: contain;
+
+                background-attachment: fixed;
+
+                background-repeat: no-repeat;
+
+                background-position: center;
+            }
+
+            img {
+                position: absolute;
+                transform: translate(-50%, -50%);
+            }
+
+            button {
+                position: absolute;
+                width: 22vh;
+                height: 6vh;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            #countPeopleButton {
+                bottom: 10px;
+                left: 10px;
+            }
+
+            #infinityRectButton {
+                top: 10px;
+                left: calc(50vw - 11vh);
+            }
+
+            #imageChatButton {
+                bottom: 10px;
+                right: 10px;
+            }
+        </style>
+
+        <script>
+            setInterval(function () {
+                window.location.reload();
+            }, 10000);
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var width = document.documentElement.clientWidth;
+                var height = document.documentElement.clientHeight;
+
+                let unit = Math.sqrt(width * height) / 120;
+
+                const container = document.getElementsByTagName('span')[0];
+
+                let type = Math.floor(randomR(0, 3));
+                if (type == 0) {
+                    for (let i = 0; i < 33; i++) {
+                        const img = document.createElement('img');
+                        img.src = `./asset/3d/${i}.gif`;
+
+                        img.style.width = (30 * unit) + 'px';
+                        const x = randomR(0, width - img.clientWidth);
+                        const y = randomR(0, height - img.clientHeight);
+                        img.style.left = `${x}px`;
+                        img.style.top = `${y}px`;
+
+                        container.appendChild(img);
+                    }
+                }
+                else if (type == 1) {
+                    for (let i = 0; i < 28; i++) {
+                        const img = document.createElement('img');
+                        img.src = `./asset/rect/${i}.svg`;
+
+                        img.style.width = (12 * unit) + 'px';
+                        const x = randomR(0, width - img.clientWidth);
+                        const y = randomR(0, height - img.clientHeight);
+                        img.style.left = `${x}px`;
+                        img.style.top = `${y}px`;
+
+                        container.appendChild(img);
+                    }
+                }
+                else {
+                    for (let i = 0; i < 9; i++) {
+                        const img = document.createElement('img');
+                        img.src = `./asset/anime/${i}.gif`;
+
+                        img.style.width = (30 * unit) + 'px';
+                        const x = randomR(0, width - img.clientWidth);
+                        const y = randomR(0, height - img.clientHeight);
+                        img.style.left = `${x}px`;
+                        img.style.top = `${y}px`;
+
+                        container.appendChild(img);
+                    }
+                }
+
+                const player = document.getElementById('audioPlayer');
+                player.src = './asset/sound/nature/' + Math.floor(randomR(0, 11)) + '.mp3';
+                player.play();
+            });
+
+            function randomR(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+        </script>
+    </head>
+
+    <body>
+        <span></span>
+        <audio id="audioPlayer" loop></audio>
+
+        <button id="countPeopleButton" onclick="location.href='./countPeople/index.html';">COUNT PEOPLE</button>
+        <button id="infinityRectButton" onclick="location.href='./infinityRect/index.html';">INFINITY RECT</button>
+        <button id="imageChatButton" onclick="location.href='./imageChat/index.html';">IMAGE CHAT</button>
+    </body>
+
+</html>

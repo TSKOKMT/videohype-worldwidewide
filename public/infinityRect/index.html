@@ -24,7 +24,6 @@
                 border: 4px solid #ff00ff;
                 /*border-radius: 10%;*/
                 overflow: hidden;
-                cursor: pointer;
             }
 
             #container {
@@ -102,8 +101,8 @@
                     let bOk;
                     let whileCount = 0;
                     do {
-                        const randomW = randomR(20, 40);
-                        const randomH = randomR(20, 40);
+                        const randomW = randomR(20, 60);
+                        const randomH = randomR(20, 60);
                         const randomX = randomR(0, 100 - randomW);
                         const randomY = randomR(0, 100 - randomH);
                         boxes[i].style.width = `${randomW}%`;
@@ -220,8 +219,7 @@
                     'https://en.wikipedia.org/wiki/Internet',
                     'https://www.youtube.com/embed/UDnUhCgS2Sg?autoplay=1&mute=1',
                     'https://toroymoi.com',
-                    'https://www.newrafael.com',
-                    'https://www.4chan.org/index.php'
+                    'https://www.newrafael.com'
                 ]
                 return srcs[Math.floor(randomR(0, srcs.length))];
             }
