@@ -193,6 +193,9 @@
                     requestAnimationFrame(loop);
                 }
                 requestAnimationFrame(loop);*/
+
+                const player = document.getElementById('audioPlayer');
+                player.play();
             });
 
             function randomR(min, max) {
@@ -250,6 +253,8 @@
 
         <button id="reloadButton" onclick="location.href='./index.html';">SHUFFLE</button>
         <button id="homeButton" onclick="location.href='../index.html';">HOME</button>
+
+        <audio id="audioPlayer" src="../asset/music/01.mp3" loop></audio>
     </body>
 
 </html>
